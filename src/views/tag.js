@@ -12,7 +12,7 @@ var TagView = Marionette.View.extend({
   onClick(e) {
     e.preventDefault();
     this.$el.toggleClass('tag-selected');
-    this.triggerMethod('add:genre', this.model.get('name'));
+    this.triggerMethod('add:genre', this.model.get('name').toLowerCase());
   },
   serializeData() {
     return _.extend(this.model.toJSON());

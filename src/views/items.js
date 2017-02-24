@@ -19,24 +19,30 @@ var ItemsView = Marionette.CompositeView.extend({
   },
   onFetch(query, tags) {
     var opts = _.extend();
+
     this.collection.fetch({
-      data: {
-        q: query,
-        tag_list: tags,
-        format: 'json',
-        client_id: config.client_id,
-        limit: config.pageSize
-      },
-      success: _.bind(function(r) {
-        this.collection.sort();
-      }, this),
-      error(e) {
-        throw new Error(e);
-      },
-      failure(e) {
-        throw new Error(e);
-      }
+      query: query,
+      tag_list: tags
     });
+
+    // this.collection.fetch({
+    //   data: {
+    //     q: query,
+    //     tag_list: tags,
+    //     format: 'json',
+    //     client_id: config.client_id,
+    //     limit: config.pageSize
+    //   },
+    //   success: _.bind(function(r) {
+    //     this.collection.sort();
+    //   }, this),
+    //   error(e) {
+    //     throw new Error(e);
+    //   },
+    //   failure(e) {
+    //     throw new Error(e);
+    //   }
+    // });
   },
   downloadable() {
     var ds = this.collection.get_downloadable();

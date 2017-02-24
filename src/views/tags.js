@@ -13,10 +13,10 @@ var ItemsView = Marionette.CompositeView.extend({
     'reset': 'render'
   },
   childViewTriggers: {
-    'add:genre': 'child:add:genre'
+    'add:tag': 'child:add:tag'
   },
-  onChildAddGenre(genre) {
-    this.triggerMethod('add:genre', genre);
+  onChildAddTag(tag) {
+    this.triggerMethod('add:tag', tag);
   },
   initialize() {
     this.collection = new Schema.Tags();

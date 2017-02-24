@@ -8,7 +8,7 @@ var HomeView = Marionette.View.extend({
   template: template,
   tags: [],
   childViewTriggers: {
-    'add:genre': 'child:add:genre'
+    'add:tag': 'child:add:tag'
   },
   regions: {
     tagsRegion: '#tags-content',
@@ -32,10 +32,10 @@ var HomeView = Marionette.View.extend({
       app.onAppEvent('fetch:items', query, tags);
     }
   },
-  onChildAddGenre(genre) {
-    var index = this.tags.indexOf(genre);
+  onChildAddTag(tag) {
+    var index = this.tags.indexOf(tag);
     if(index == -1) {
-      this.tags.push(genre);
+      this.tags.push(tag);
     } else {
       this.tags.splice(index, 1);
     }

@@ -120,7 +120,7 @@ hr.small {
 }
 
 .tag-selected {
-  background-color: #a38018;
+  background-color: #800000 !important;
 }
 
 .tags a:hover {

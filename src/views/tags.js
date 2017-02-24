@@ -7,10 +7,16 @@ const Schema = require('schemas/tag');
 var ItemsView = Marionette.CompositeView.extend({
   template: template,
   className: 'tags',
-  childView: TagView,
   childViewContainer: '.row',
+  childView: TagView,
   collectionEvents: {
     'reset': 'render'
+  },
+  childViewTriggers: {
+    'add:genre': 'child:add:genre'
+  },
+  onChildAddGenre(genre) {
+    this.triggerMethod('add:genre', genre);
   },
   initialize() {
     this.collection = new Schema.Tags();

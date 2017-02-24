@@ -17,11 +17,12 @@ var ItemsView = Marionette.CompositeView.extend({
     this.collection = new Schema.Items();
     this.listenTo(app, 'fetch:items', this.onFetch, arguments);
   },
-  onFetch(query) {
+  onFetch(query, tags) {
     var opts = _.extend();
     this.collection.fetch({
       data: {
         q: query,
+        tag_list: tags,
         format: 'json',
         client_id: config.client_id,
         limit: config.pageSize

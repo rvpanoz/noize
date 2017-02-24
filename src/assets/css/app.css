@@ -12,6 +12,10 @@ html, body {
     user-select: none;
 }
 
+a {
+  cursor: pointer;
+}
+
 #main-content {
     overflow-x: hidden;
 }

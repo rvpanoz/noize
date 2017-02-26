@@ -19,7 +19,8 @@ var app = Marionette.Application.extend({
      * initialize soundcloud
      */
     SC.initialize({
-      client_id: config.client_id
+      client_id: config.client_id,
+      redirect_uri: config.redirect_uri
     });
 
     /**
@@ -28,9 +29,7 @@ var app = Marionette.Application.extend({
      */
     this.router = new Router();
   },
-
   onStart() {
-    console.log('app:start');
     /**
      * setup config
      */
@@ -52,7 +51,6 @@ var app = Marionette.Application.extend({
      * Global app events
      */
   },
-
   navigate(cls, params) {
     var url = {};
     _.extend(url, {

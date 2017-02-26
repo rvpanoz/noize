@@ -6,8 +6,8 @@ const Schema = require('schemas/tag');
 
 var ItemsView = Marionette.CompositeView.extend({
   template: template,
-  className: 'tags',
-  childViewContainer: '.row',
+  className: 'list-group tags',
+  tagName: 'ul',
   childView: TagView,
   collectionEvents: {
     'reset': 'render'

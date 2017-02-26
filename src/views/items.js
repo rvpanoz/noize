@@ -6,43 +6,51 @@ const Schema = require('schemas/item');
 
 var ItemsView = Marionette.CompositeView.extend({
   template: template,
-  className: 'items',
+  childViewContainer: '.items',
   childView: ItemView,
-  childViewContainer: '.row',
   collectionEvents: {
+    'sync': 'render',
     'reset': 'render'
+  },
+  events: {
+    'click .btn-next': 'onNext'
   },
   initialize() {
     _.bindAll(this, 'onFetch');
     this.collection = new Schema.Items();
     this.listenTo(app, 'fetch:items', this.onFetch, arguments);
+
+    // SC.get('users/panos-rv').then(function(user){
+    //   console.log('Panos', user);
+    // });
   },
-  onFetch(query, tags) {
-    var opts = _.extend();
+  onFetch(opts) {
+    var opts = _.extend(opts);
 
     this.collection.fetch({
-      query: query,
-      tag_list: tags
+      data: {
+        q: opts.query,
+        tags: opts.tags,
+        filter: 'public',
+        format: 'json',
+        client_id: config.client_id,
+        limit: config.pageSize,
+        linked_partitioning: 1
+      },
+      success: _.bind(function(r) {
+        this.collection.sort();
+      }, this),
+      error(e) {
+        throw new Error(e);
+      },
+      failure(e) {
+        throw new Error(e);
+      }
     });
-
-    // this.collection.fetch({
-    //   data: {
-    //     q: query,
-    //     tag_list: tags,
-    //     format: 'json',
-    //     client_id: config.client_id,
-    //     limit: config.pageSize
-    //   },
-    //   success: _.bind(function(r) {
-    //     this.collection.sort();
-    //   }, this),
-    //   error(e) {
-    //     throw new Error(e);
-    //   },
-    //   failure(e) {
-    //     throw new Error(e);
-    //   }
-    // });
+  },
+  onNext(e) {
+    e.preventDefault();
+    this.collection.fetch();
   },
   downloadable() {
     var ds = this.collection.get_downloadable();

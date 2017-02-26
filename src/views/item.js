@@ -1,18 +1,17 @@
 const _ = require('lodash');
 const Marionette = require('backbone.marionette');
 const template = require('../templates/item.hbs');
+const config = require('../config');
 
 var ItemView = Marionette.View.extend({
   template: template,
-  className: 'col-lg-6 col-md-6 col-sm-6 col-xs-6',
-  events: {
-    'click a': 'onClick'
-  },
+  tagName: 'tr',
   ui: {
     'embed': '.embed'
   },
   initialize() {
-    _.bindAll(this, 'onEmbed')
+    _.bindAll(this, 'onEmbed');
+
   },
   onRender() {
     var permalink_url = this.model.get('permalink_url');
@@ -21,12 +20,19 @@ var ItemView = Marionette.View.extend({
       auto_play: false
     }).then(this.onEmbed);
   },
+  onDownload(e) {
+    e.preventDefault();
+  },
+  onDomRefresh() {
+
+  },
   onEmbed(content) {
     this.getUI('embed').html(content.html);
-    return false;
   },
   serializeData() {
-    return _.extend(this.model.toJSON());
+    return _.extend(this.model.toJSON(), {
+      client_id: config.client_id
+    });
   }
 });
 

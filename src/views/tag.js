@@ -4,15 +4,15 @@ const template = require('../templates/tag.hbs');
 
 var TagView = Marionette.View.extend({
   template: template,
-  tagName: 'a',
-  className: 'col-lg-3 col-md-3 col-sm-3 col-xs-3',
+  tagName: 'li',
+  className: 'list-group-item',
   events: {
-    'click': 'onClick'
+    'click a': 'onClick'
   },
   onClick(e) {
     e.preventDefault();
     this.$el.toggleClass('tag-selected');
-    this.triggerMethod('add:genre', this.model.get('name').toLowerCase());
+    this.triggerMethod('add:tag', this.model.get('name').toLowerCase());
   },
   serializeData() {
     return _.extend(this.model.toJSON());

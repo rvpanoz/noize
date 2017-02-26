@@ -1,48 +1,48 @@
-<body>
+<!-- Navigation -->
+<a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+<nav id="sidebar-wrapper" class="">
+    <ul class="sidebar-nav">
+        <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+        <li class="sidebar-brand">
+            <a href="#" onclick="$(&quot;#menu-close&quot;).click();">Menu</a>
+        </li>
+    </ul>
+</nav>
 
-    <!-- Navigation -->
-    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
-    <nav id="sidebar-wrapper" class="">
-        <ul class="sidebar-nav">
-            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-            <li class="sidebar-brand">
-                <a href="#top" onclick="$(&quot;#menu-close&quot;).click();">Menu</a>
-            </li>
-        </ul>
-    </nav>
+<!-- Header -->
+<header id="top" class="header">
+    <div class="text-vertical-center">
+        <h1>Noize</h1>
+        <h3>Soundcloud</h3>
+    </div>
+</header>
 
-    <!-- Header -->
-    <header id="top" class="header">
-        <div class="text-vertical-center">
-            <h1>Noize</h1>
-            <h3>Soundcloud</h3>
-        </div>
-    </header>
-
-    <section style="margin-top: 20px;">
-        <div class="main" id="main-content">
-            <div class="row" style="margin-top: 60px;">
-                <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
-                    <form class="form form-horizontal">
-                        <div class="form-group">
-                            <input type="text" name="query" class="form-control" placeholder="enter your query">
+<section style="margin-top: 20px;">
+    <div class="container main" id="main-content">
+        <div class="row" style="margin-top: 60px;">
+            <div class="col-md-12">
+                <div class="grid search">
+                    <div class="grid-body">
+                        <div class="row">
+                          <div class="col-md-9">
+                              <div class="input-group">
+                                  <input type="text" class="form-control" name="query" autocomplete="true">
+                                  <span class="input-group-btn">
+                                    <button class="btn btn-primary btn-search" type="button">
+                                      <i class="fa fa-search"></i>
+                                    </button>
+                                  </span>
+                              </div>
+                              <div class="padding"></div>
+                              <div id="items-content"></div>
+                          </div>
+                            <div class="col-md-3">
+                              <div id="tags-content"></div>
+                            </div>
                         </div>
-                    </form>
-                    <div style="margin-top: 40px;">
-                        <h3>Select genres</h3>
-                        <div id="tags-content"></div>
                     </div>
                 </div>
             </div>
-            <div class="row" style="margin-top: 40px;">
-                <div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
-                    <a href="#" class="btn btn-info btn-lg btn-block search">Search</a>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 40px;">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="items-content"></div>
-            </div>
         </div>
-    </section>
-
-</body>
+    </div>
+</section>

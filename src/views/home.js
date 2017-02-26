@@ -4,6 +4,9 @@ const config = require('../config');
 const ItemsView = require('./items');
 const TagsView = require('./tags');
 
+const bootstrapCss = require('bootstrap/dist/css/bootstrap.css');
+const fontawesome = require('assets/font-awesome/css/font-awesome.min.css');
+
 var HomeView = Marionette.View.extend({
   template: template,
   tags: [],
@@ -15,7 +18,7 @@ var HomeView = Marionette.View.extend({
     itemsRegion: '#items-content'
   },
   events: {
-    'click .search': 'onSearch'
+    'click .btn-search': 'onSearch'
   },
   ui: {
     query: 'input[name="query"]'
@@ -27,9 +30,13 @@ var HomeView = Marionette.View.extend({
   onSearch(e) {
     e.preventDefault();
     var query = this.getUI('query').val();
-    var tags = this.tags.join(" ");
-    if(query.length) {
-      app.onAppEvent('fetch:items', query, tags);
+    var tags = this.tags.join(",");
+    console.log(tags);
+    if(query && query.length) {
+      app.onAppEvent('fetch:items', {
+        query: query,
+        tags: tags
+      });
     }
   },
   onChildAddTag(tag) {

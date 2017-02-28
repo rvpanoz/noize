@@ -1,441 +1,142 @@
-.track-list {
-    list-style: none;
-    font-family: 'Lato', sans-serif;
-    margin: 0px;
-    padding: 0px;
-}
 
-.track-list>li {
-    background-color: rgb(255, 255, 255);
-    box-shadow: 0px 0px 5px rgb(51, 51, 51);
-    box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.7);
-    padding: 0px;
-    margin: 0px 0px 20px;
-}
-
-.track-list>li>time {
-    display: inline-block;
-    width: 100%;
-    color: rgb(255, 255, 255);
-    background-color: rgb(197, 44, 102);
-    padding: 5px;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.track-list>li:nth-child(even)>time {
-    background-color: rgb(165, 82, 167);
-}
-
-.track-list>li>time>span {
+.src-image {
     display: none;
 }
 
-.track-list>li>time>.day {
-    display: block;
-    font-size: 56pt;
-    font-weight: 100;
-    line-height: 1;
+.card {
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    text-align: center;
+    padding: 0;
+    background-color: #284c79;
+    color: rgb(136, 172, 217);
 }
 
-.track-list>li time>.month {
-    display: block;
-    font-size: 24pt;
-    font-weight: 900;
-    line-height: 1;
+.card .header-bg {
+    /* This stretches the canvas across the entire hero unit */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    border-bottom: 1px #FFF solid;
+    /* This positions the canvas under the text */
+    z-index: 1;
 }
 
-.track-list>li>img {
+.card .avatar {
+    position: relative;
+    margin-top: 15px;
+    z-index: 100;
+}
+
+.card .avatar img {
+    width: 80px;
+    height: 80px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(0, 0, 30, 0.8);
+}
+
+.nz-div {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #e1e8ed;
+    border-radius: 6px;
+    height: 280px;
+    max-width: 340px;
+    margin-bottom: 15px;
+}
+.nz-bg {
+    background-color: #ed6f70;
+    background-position: 0 50%;
+    background-size: 100% auto;
+    border-bottom: 1px solid #e1e8ed;
+    border-radius: 4px 4px 0 0;
+    height: 95px;
     width: 100%;
 }
-
-.track-list>li>.info {
-    padding-top: 15px;
-    text-align: center;
+.nz-block {
+    display: block !important;
+}
+.nz-button {
+    margin: -45px -10px 0;
+    text-align: right;
+    width: 100%;
+}
+.nz-avatarLink {
+    background-color: #fff;
+    border-radius: 6px;
+    display: inline-block !important;
+    float: left;
+    margin: -30px 5px 0 8px;
+    max-width: 100%;
+    padding: 1px;
+    vertical-align: bottom;
+}
+.nz-avatarImg {
+    border: 2px solid #fff;
+    border-radius: 7px;
+    box-sizing: border-box;
+    color: #fff;
+    height: 82px;
+    width: 72px;
+}
+.nz-divUser {
+    margin: 5px 0 0;
 }
 
-.track-list>li>.info>.title {
-    font-size: 17pt;
+.nz-divUser p {
+  margin: 60px 0 0;
+  padding: 10px;
+}
+
+.nz-divName {
+    font-size: 18px;
     font-weight: 700;
-    margin: 0px;
+    line-height: 21px;
 }
-
-.track-list>li>.info>.desc {
-    font-size: 11pt;
-    font-weight: 200;
-    margin: 0px;
+.nz-divName a {
+    color: inherit !important;
 }
-
-.track-list>li>.info>ul, .track-list>li>.social>ul {
+.nz-divStats {
+    margin-left: 11px;
+    padding: 10px 0;
+}
+.nz-Arrange {
+    box-sizing: border-box;
     display: table;
-    list-style: none;
-    margin: 10px 0px 0px;
-    padding: 0px;
-    width: 100%;
-    text-align: center;
+    margin: 0;
+    min-width: 100%;
+    padding: 0;
+    table-layout: auto;
 }
-
-.track-list>li>.social>ul {
-    margin: 0px;
+ul.nz-Arrange {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
 }
-
-.track-list>li>.info>ul>li, .track-list>li>.social>ul>li {
+.nz-ArrangeSizeFit {
     display: table-cell;
-    cursor: pointer;
-    color: rgb(30, 30, 30);
-    font-size: 11pt;
-    font-weight: 300;
-    padding: 3px 0px;
+    padding: 0;
+    vertical-align: top;
 }
-
-.track-list>li>.info>ul>li>a {
-    display: block;
-    width: 100%;
-    color: rgb(30, 30, 30);
+.nz-ArrangeSizeFit a:hover {
     text-decoration: none;
 }
-
-.track-list>li>.social>ul>li {
-    padding: 0px;
-}
-
-.track-list>li>.social>ul>li>a {
-    padding: 3px 0px;
-}
-
-.track-list>li>.info>ul>li:hover, .track-list>li>.social>ul>li:hover {
-    color: rgb(30, 30, 30);
-    background-color: rgb(200, 200, 200);
-}
-
-.twitter a {
+.nz-StatValue {
     display: block;
-    width: 100%;
-    color: rgb(75, 110, 168) !important;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.15s ease-in-out 0s;
 }
-
-.twitter a {
-    color: rgb(79, 213, 248) !important;
-}
-
-.twitter:hover a {
-    color: rgb(255, 255, 255) !important;
-    background-color: rgb(79, 213, 248) !important;
-}
-
-@media (min-width: 768px) {
-    .track-list>li {
-        position: relative;
-        display: block;
-        width: 100%;
-        height: 120px;
-        padding: 0px;
-    }
-    .track-list>li>time, .track-list>li>img {
-        display: inline-block;
-    }
-    .track-list>li>time, .track-list>li>img {
-        width: 120px;
-        float: left;
-    }
-    .track-list>li>.info {
-        background-color: rgb(245, 245, 245);
-        overflow: hidden;
-    }
-    .track-list>li>time, .track-list>li>img {
-        width: 120px;
-        height: 120px;
-        padding: 0px;
-        margin: 0px;
-    }
-    .track-list>li>.info {
-        position: relative;
-        height: 120px;
-        text-align: left;
-        padding-right: 40px;
-    }
-    .track-list>li>.info>.title, .track-list>li>.info>.desc {
-        padding: 0px 10px;
-    }
-    .track-list>li>.info>ul {
-        position: absolute;
-        left: 0px;
-        bottom: 0px;
-    }
-    .track-list>li>.social {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        display: block;
-        width: 40px;
-    }
-    .track-list>li>.social>ul {
-        border-left: 1px solid rgb(230, 230, 230);
-    }
-    .track-list>li>.social>ul>li {
-        display: block;
-        padding: 0px;
-    }
-    .track-list>li>.social>ul>li>a {
-        display: block;
-        width: 40px;
-        padding: 10px 0px 9px;
-    }
-}
-
-
-/** table layout **/
-
-.content h1 {
-    text-align: center;
-}
-
-.content .content-footer p {
-    color: #6d6d6d;
-    font-size: 12px;
-    text-align: center;
-}
-
-.content .content-footer p a {
-    color: inherit;
-    font-weight: bold;
-}
-
-
-/*	--------------------------------------------------
-	:: Table Filter
-	-------------------------------------------------- */
-
-.panel {
-    border: 1px solid #ddd;
-    background-color: #fcfcfc;
-}
-
-.panel .btn-group {
-    margin: 15px 0 30px;
-}
-
-.panel .btn-group .btn {
-    transition: background-color .3s ease;
-}
-
-.table-tracks {
-    background-color: #fff;
-    border-bottom: 1px solid #eee;
-}
-
-.table-tracks tbody tr:hover {
-    cursor: pointer;
-    background-color: #eee;
-}
-
-.table-tracks tbody tr td {
-    padding: 10px;
-    vertical-align: middle;
-    border-top-color: #eee;
-}
-
-.table-tracks tbody tr.selected td {
-    background-color: #eee;
-}
-
-.table-tracks tr td:first-child {
-    width: 38px;
-}
-
-.table-tracks tr td:nth-child(2) {
-    width: 35px;
-}
-
-.ckbox {
-    position: relative;
-}
-
-.ckbox input[type="checkbox"] {
-    opacity: 0;
-}
-
-.ckbox label {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.ckbox label:before {
-    content: '';
-    top: 1px;
-    left: 0;
-    width: 18px;
-    height: 18px;
-    display: block;
-    position: absolute;
-    border-radius: 2px;
-    border: 1px solid #bbb;
-    background-color: #fff;
-}
-
-.ckbox input[type="checkbox"]:checked+label:before {
-    border-color: #2BBCDE;
-    background-color: #2BBCDE;
-}
-
-.ckbox input[type="checkbox"]:checked+label:after {
-    top: 3px;
-    left: 3.5px;
-    content: '\e013';
-    color: #fff;
-    font-size: 11px;
-    font-family: 'Glyphicons Halflings';
-    position: absolute;
-}
-
-.table-tracks .star {
-    color: #ccc;
-    text-align: center;
-    display: block;
-}
-
-.table-tracks .star.star-checked {
-    color: #F0AD4E;
-}
-
-.table-tracks .star:hover {
-    color: #ccc;
-}
-
-.table-tracks .star.star-checked:hover {
-    color: #F0AD4E;
-}
-
-.table-tracks .media-photo {
-    width: 35px;
-}
-
-.table-tracks .media-body {
-    display: block;
-    /* Had to use this style to force the div to expand (wasn't necessary with my bootstrap version 3.3.6) */
-}
-
-.table-tracks .media-meta {
-    font-size: 11px;
-    color: #999;
-}
-
-.table-tracks .media .title {
-    color: #2BBCDE;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: normal;
-    margin: 0;
-}
-
-.table-tracks .media .title span {
-    font-size: .8em;
-    margin-right: 20px;
-}
-
-.table-tracks .media .title span.pagado {
-    color: #5cb85c;
-}
-
-.table-tracks .media .title span.pendiente {
-    color: #f0ad4e;
-}
-
-.table-tracks .media .title span.cancelado {
-    color: #d9534f;
-}
-
-.table-tracks .media .summary {
-    font-size: 14px;
-}
-
-
-/** table layout **/
-
-.wrapper {
-    width: 500px;
-    margin: 0 auto;
-}
-
-ul.tracks-list {
-    maring: 0;
-    padding: 0px;
-    list-style: none;
-}
-
-ul.tracks-list li {
-    padding: 20px;
-    margin-top: 20px;
-    background-color: rgba(255, 255, 255, 0.9);
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-}
-
-a.download:hover {
-  color: #888888;
-}
-
-.head {
-    padding: 0px;
-    color: red;
-    font-size: 36px;
-    text-align: center;
-    background-color: #ed6f70;
-    color: #fff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0px 0px 2px #888888;
-    -moz-box-shadow: 0px 0px 2px #888888;
-    box-shadow: 0px 0px 2px #888888;
-}
-
-.artwork {
-  position: relative;
-  bottom: 100px;
-}
-
-.artwork, img {
-    display: inline-block;
-    width: 100px;
-    height: 100px;
-}
-
-ul.tracks-list li span {
-    font-size: 16px;
-    color: #a0a29d;
-    margin-right: 40px;
-    height: 32px;
-    line-height: 32px;
-}
-
-.info {
-  width: 75%;
-  margin: 0;
-  margin-left: 5%;
-  display: inline-block;
-  background-color: ghostwhite;
-  padding: 20px;
-  border: 1px;
-  border-radius: 3px;
-}
-
-.social {
-    padding-top: 20px;
-}
-
-h3 {
-    color: #767a7b;
-    margin: 0;
-    padding-bottom: 20px;
-    font-size: 36px;
-    font-weight: 100;
-    border-bottom: 1px solid #e0e1dd;
-}
-
-.fav {
-    float: right;
+.nz-StatLabel {
+    color: #8899a6;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    overflow: hidden;
+    text-transform: uppercase;
+    transition: color 0.15s ease-in-out 0s;
 }

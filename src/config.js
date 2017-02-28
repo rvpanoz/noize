@@ -6,5 +6,5 @@ module.exports = {
     tracks: 'https://api.soundcloud.com/tracks',
     users: 'https://api.soundcloud.com/users',
   },
-  pageSize: 20
+  pageSize: 9
 }

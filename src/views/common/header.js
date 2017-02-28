@@ -4,17 +4,20 @@ const template = require('templates/common/header.hbs')
 
 var HeaderView = Marionette.View.extend({
   template: template,
-  className: 'navbar navbar-static-top',
-  events: {
-    'click a.navigation-link': 'onNavigate'
+  className: 'header',
+  attributes: {
+    id: 'top'
   },
-  onNavigate(e) {
+  ui: {
+    sidebar: '#sidebar-wrapper'
+  },
+  events: {
+    'click #filters-toggle': 'onFiltersToggle',
+    'click #filters-close': 'onFiltersToggle'
+  },
+  onFiltersToggle(e) {
     e.preventDefault();
-    var cls = this.$(e.currentTarget).data('cls');
-    if (cls) {
-      app.navigate(cls);
-    }
-    return false;
+    this.getUI('sidebar').toggleClass("active");
   }
 });
 

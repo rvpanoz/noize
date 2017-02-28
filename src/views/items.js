@@ -8,11 +8,10 @@ const moment = require('moment');
 
 var ItemsView = Marionette.CompositeView.extend({
   template: template,
-  childViewContainer: '.items',
   childView: ItemView,
+  childViewContainer: 'div.items',
   collectionEvents: {
-    'sync': 'render',
-    // 'reset': 'render'
+    'sync': 'render'
   },
   ui: {
     pagination: 'ul.pagination'
@@ -31,12 +30,7 @@ var ItemsView = Marionette.CompositeView.extend({
     this.collection.fetch({
       data: {
         q: opts.query,
-        tags: opts.tags,
         filter: 'public',
-        created_at: {
-          // from: moment().startOf('year').format('yyyy-mm-dd hh:mm:ss'.toUpperCase())
-          // to: moment().endOf('year').format('yyyy-mm-dd hh:mm:ss'.toUpperCase())
-        },
         format: 'json',
         client_id: config.client_id,
         limit: config.pageSize,
@@ -56,8 +50,8 @@ var ItemsView = Marionette.CompositeView.extend({
   onDomRefresh() {
     if(this.collection.length) {
       this.collection.sort();
-      this.sets(30);
-      this.getUI('pagination').show();
+      // this.sets(30);
+      // this.getUI('pagination').show();
     }
   },
   onNext(e) {

@@ -1,16 +1,42 @@
-<div class="artwork">
-  <img src="{{artwork_url}}" />
-</div>
-<div class="info">
-    <h3>{{title}}</h3>
-    <p></p>
-    <p>{{description_short}}..</p>
-    <div class="social">
-        <span class="fa fa-heart"> {{likes_count}} likes</span>
-        <span class="fa fa-comment"> {{comment_count}} comments</span>
-        <span class="fa fa-share"> {{reposts_count}} reposts</span>
+<div class="nz-div">
+    <a class="nz-bg nz-block"></a>
+
+    <div>
         {{#if downloadable}}
-            <a class="download" href="{{downloadableUrl}}"><span class="fa fa-download"> Download</span></a>
+        <div class="nz-button">
+            <a href="{{downloadableUrl}}" download class="btn btn-primary btn-mini" data-show-count="false" data-size="large" data-show-screen-name="false" data-dnt="true"><i class="fa fa-download"></i> Download</a>
+        </div>
         {{/if}}
+
+        <a title="{{title}}" href="{{parmalink_url}}" class="nz-avatarLink">
+            <img alt="{{title}}" src="{{artwork_url}}" class="nz-avatarImg">
+        </a>
+
+        <div class="nz-divUser">
+            <p>{{title}}</p>
+        </div>
+
+        <div class="nz-divStats">
+            <ul class="nz-Arrange">
+                <li class="nz-ArrangeSizeFit">
+                    <a href="#" title="{{likes_count}} likes">
+                        <span class="nz-StatLabel nz-block">Likes</span>
+                        <span class="nz-StatValue">{{likes_count}}</span>
+                    </a>
+                </li>
+                <li class="nz-ArrangeSizeFit">
+                    <a href="#" title="{{commnent_count}} comments">
+                        <span class="nz-StatLabel nz-block">Comments</span>
+                        <span class="nz-StatValue">{{comment_count}}</span>
+                    </a>
+                </li>
+                <li class="nz-ArrangeSizeFit">
+                    <a href="#" title="{{reposts_count}} reposts">
+                        <span class="nz-StatLabel nz-block">Reposts</span>
+                        <span class="nz-StatValue">{{reposts_count}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>

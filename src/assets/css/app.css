@@ -16,23 +16,40 @@ a {
     cursor: pointer;
 }
 
-#main-content {
+#app-content, #main-content {
     overflow-x: hidden;
 }
 
-/*img {
-    filter: gray;
-    -webkit-filter: grayscale(1);
-    -webkit-box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.75);
-    margin-bottom: 20px;
+.search-query {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: "Telefon Black", Sans-Serif;
+    font-size: 6rem;
+    font-weight: bold;
+    background: none;
+    color: #ed6f70;
+    box-shadow: none !important;
+    border: 0;
+    padding: 0;
+    width: 100%;
+    height: 100px;
+    border-bottom: 1px solid #000;
 }
 
-img:hover {
-    filter: none;
-    -webkit-filter: grayscale(0);
-}*/
+.head {
+    padding: 0px;
+    color: red;
+    font-size: 36px;
+    text-align: center;
+    background-color: #ed6f70;
+    color: #fff;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 0px 2px #888888;
+    -moz-box-shadow: 0px 0px 2px #888888;
+    box-shadow: 0px 0px 2px #888888;
+}
 
 .text-vertical-center {
     display: table-cell;
@@ -131,7 +148,7 @@ a.tag {
     height: 100%;
     transform: translateX(250px);
     overflow-y: auto;
-    background: #222;
+    background: #331d35;
     -webkit-transition: all 0.4s ease 0s;
     -moz-transition: all 0.4s ease 0s;
     -ms-transition: all 0.4s ease 0s;
@@ -149,7 +166,8 @@ a.tag {
 }
 
 .sidebar-nav li {
-    text-indent: 20px;
+    /*text-indent: 20px;*/
+    color: white;
     line-height: 40px;
 }
 
@@ -184,7 +202,7 @@ a.tag {
     background: none;
 }
 
-#menu-toggle {
+#filters-toggle {
     z-index: 1;
     position: fixed;
     top: 0;
@@ -237,7 +255,6 @@ a.tag {
     padding-right: 4px \9;
     padding-left: 3px;
     padding-left: 4px \9;
-    /* IE7-8 doesn't have border-radius, so don't indent the padding */
     margin-bottom: 0;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -247,12 +264,10 @@ a.tag {
 #custom-search-input button {
     border: 0;
     background: none;
-    /** belows styles are working good */
     padding: 2px 5px;
     margin-top: 2px;
     position: relative;
     left: -28px;
-    /* IE7-8 doesn't have border-radius, so don't indent the padding */
     margin-bottom: 0;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -262,11 +277,6 @@ a.tag {
 
 .search-query:focus+button {
     z-index: 3;
-}
-
-.card.hovercard .bottom {
-    padding: 0 20px;
-    margin-bottom: 17px;
 }
 
 .btn-pref .btn {
@@ -332,17 +342,676 @@ iframe {
     margin-bottom: 30px;
 }
 
-.glide__slide {
-    background-color: #993366 !important;
-}
-
-
-/** item template **/
-
 h3.title {
-  font-size: 18px;
-  padding: 10px;
-  color: #fff;
+    font-size: 18px;
+    padding: 10px;
+    color: #fff;
 }
 
-/** end item **/
+
+/* --------------------------------
+
+Main Components
+
+-------------------------------- */
+
+.nz-header {
+    position: relative;
+    height: 150px;
+    background-color: #331d35;
+}
+
+.nz-header h1 {
+    color: #ffffff;
+    line-height: 150px;
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 300;
+}
+
+@media only screen and (min-width: 1170px) {
+    .nz-header {
+        height: 60px;
+    }
+    .nz-header h1 {
+        line-height: 60px;
+    }
+}
+
+.nz-main-content {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.nz-main-content:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.nz-main-content.is-fixed .nz-tab-filter-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.nz-main-content.is-fixed .nz-gallery {
+    padding-top: 76px;
+}
+
+.nz-main-content.is-fixed .nz-filter {
+    position: fixed;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.nz-main-content.is-fixed .nz-filter form {
+    height: 100vh;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.nz-main-content.is-fixed .nz-filter-trigger {
+    position: fixed;
+}
+
+@media only screen and (min-width: 768px) {
+    .nz-main-content.is-fixed .nz-gallery {
+        padding-top: 90px;
+    }
+}
+
+@media only screen and (min-width: 1170px) {
+    .nz-main-content.is-fixed .nz-gallery {
+        padding-top: 100px;
+    }
+}
+
+
+/* --------------------------------
+
+xtab-filter
+
+-------------------------------- */
+
+.nz-tab-filter-wrapper {
+    background-color: #ffffff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+    z-index: 1;
+}
+
+.nz-tab-filter-wrapper:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.nz-tab-filter {
+    /* tabbed navigation style on mobile - dropdown */
+    position: relative;
+    height: 50px;
+    width: 140px;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.nz-tab-filter::after {
+    /* small arrow icon */
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    bottom: auto;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    /*background: url("../img/nz-icon-arrow.svg") no-repeat center center;*/
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    pointer-events: none;
+}
+
+.nz-tab-filter ul {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    box-shadow: inset 0 -2px 0 #41307c;
+}
+
+.nz-tab-filter li {
+    display: none;
+}
+
+.nz-tab-filter li:first-child {
+    /* this way the placehodler is alway visible */
+    display: block;
+}
+
+.nz-tab-filter a {
+    display: block;
+    /* set same size of the .nz-tab-filter */
+    height: 50px;
+    width: 140px;
+    line-height: 50px;
+    padding-left: 14px;
+}
+
+.nz-tab-filter a.selected {
+    background: #41307c;
+    color: #ffffff;
+}
+
+.nz-tab-filter.is-open::after {
+    /* small arrow rotation */
+    -webkit-transform: translateY(-50%) rotate(-180deg);
+    -moz-transform: translateY(-50%) rotate(-180deg);
+    -ms-transform: translateY(-50%) rotate(-180deg);
+    -o-transform: translateY(-50%) rotate(-180deg);
+    transform: translateY(-50%) rotate(-180deg);
+}
+
+.nz-tab-filter.is-open ul {
+    box-shadow: inset 0 -2px 0 #41307c, 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nz-tab-filter.is-open ul li {
+    display: block;
+}
+
+.nz-tab-filter.is-open .placeholder a {
+    /* reduces the opacity of the placeholder on mobile when the menu is open */
+    opacity: .4;
+}
+
+@media only screen and (min-width: 768px) {
+    .nz-tab-filter {
+        /* tabbed navigation style on medium devices */
+        width: auto;
+        cursor: auto;
+    }
+    .nz-tab-filter::after {
+        /* hide the arrow */
+        display: none;
+    }
+    .nz-tab-filter ul {
+        background: transparent;
+        position: static;
+        box-shadow: none;
+        text-align: center;
+    }
+    .nz-tab-filter li {
+        display: inline-block;
+    }
+    .nz-tab-filter li.placeholder {
+        display: none !important;
+    }
+    .nz-tab-filter a {
+        display: inline-block;
+        padding: 0 1em;
+        width: auto;
+        color: #9a9a9a;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+    .no-touch .nz-tab-filter a:hover {
+        color: #41307c;
+    }
+    .nz-tab-filter a.selected {
+        background: transparent;
+        color: #41307c;
+        /* create border bottom using box-shadow property */
+        box-shadow: inset 0 -2px 0 #41307c;
+    }
+    .nz-tab-filter.is-open ul li {
+        display: inline-block;
+    }
+}
+
+@media only screen and (min-width: 1170px) {
+    .nz-tab-filter {
+        /* tabbed navigation on big devices */
+        width: 100%;
+        float: right;
+        margin: 0;
+        -webkit-transition: width 0.3s;
+        -moz-transition: width 0.3s;
+        transition: width 0.3s;
+    }
+    .nz-tab-filter.filter-is-visible {
+        /* reduce width when filter is visible */
+        width: 80%;
+    }
+}
+
+
+/* --------------------------------
+
+xgallery
+
+-------------------------------- */
+
+.nz-gallery {
+    padding: 26px 5%;
+    width: 100%;
+}
+
+.nz-gallery li {
+    margin-bottom: 1.6em;
+    display: inline-block;
+    margin: 10px;
+}
+
+.nz-gallery li.gap {
+    /* used in combination with text-align: justify to align gallery elements */
+    opacity: 0;
+    height: 0;
+    display: inline-block;
+}
+
+.nz-gallery img {
+    display: block;
+    width: 100%;
+}
+
+.nz-gallery .nz-fail-message {
+    display: none;
+    text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+    .nz-gallery {
+        padding: 40px 3%;
+    }
+    .nz-gallery ul {
+        text-align: justify;
+    }
+    .nz-gallery ul:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .nz-gallery li {
+        width: 48%;
+        margin-bottom: 2em;
+    }
+}
+
+@media only screen and (min-width: 1170px) {
+    .nz-gallery {
+        padding: 50px 2%;
+        float: right;
+        -webkit-transition: width 0.3s;
+        -moz-transition: width 0.3s;
+        transition: width 0.3s;
+    }
+    .nz-gallery li {
+        width: 23%;
+    }
+    .nz-gallery.filter-is-visible {
+        /* reduce width when filter is visible */
+        width: 80%;
+    }
+}
+
+
+/* --------------------------------
+
+xfilter
+
+-------------------------------- */
+
+.nz-filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background: #ffffff;
+    box-shadow: 4px 4px 20px transparent;
+    z-index: 2;
+    /* Force Hardware Acceleration in WebKit */
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+    transform: translateX(-100%);
+    -webkit-transition: -webkit-transform 0.3s, box-shadow 0.3s;
+    -moz-transition: -moz-transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.nz-filter::before {
+    /* top colored bar */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
+    width: 100%;
+    background-color: #41307c;
+    z-index: 2;
+}
+
+.nz-filter form {
+    padding: 70px 20px;
+}
+
+.nz-filter .nz-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 50px;
+    line-height: 50px;
+    width: 60px;
+    color: #ffffff;
+    font-size: 1.3rem;
+    text-align: center;
+    background: #37296a;
+    opacity: 0;
+    -webkit-transition: opacity 0.3s;
+    -moz-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    z-index: 3;
+}
+
+.no-touch .nz-filter .nz-close:hover {
+    background: #32255f;
+}
+
+.nz-filter.filter-is-visible {
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.nz-filter.filter-is-visible .nz-close {
+    opacity: 1;
+}
+
+@media only screen and (min-width: 1170px) {
+    .nz-filter {
+        width: 20%;
+    }
+    .nz-filter form {
+        padding: 70px 10%;
+    }
+}
+
+.nz-filter-trigger {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
+    line-height: 50px;
+    width: 60px;
+    /* image replacement */
+    overflow: hidden;
+    text-indent: 100%;
+    color: transparent;
+    white-space: nowrap;
+    /*background: transparent url("../img/nz-icon-filter.svg") no-repeat center center;*/
+    z-index: 3;
+}
+
+.nz-filter-trigger.filter-is-visible {
+    pointer-events: none;
+}
+
+@media only screen and (min-width: 1170px) {
+    .nz-filter-trigger {
+        width: auto;
+        left: 2%;
+        text-indent: 0;
+        color: #9a9a9a;
+        text-transform: uppercase;
+        font-size: 1.3rem;
+        font-weight: 700;
+        padding-left: 24px;
+        background-position: left center;
+        -webkit-transition: color 0.3s;
+        -moz-transition: color 0.3s;
+        transition: color 0.3s;
+    }
+    .no-touch .nz-filter-trigger:hover {
+        color: #41307c;
+    }
+    .nz-filter-trigger.filter-is-visible, .nz-filter-trigger.filter-is-visible:hover {
+        color: #ffffff;
+    }
+}
+
+
+/* --------------------------------
+
+xcustom form elements
+
+-------------------------------- */
+
+.nz-filter-block {
+    margin-bottom: 1.6em;
+}
+
+.nz-filter-block h4 {
+    /* filter block title */
+    position: relative;
+    margin-bottom: .2em;
+    padding: 10px 0 10px 20px;
+    color: #9a9a9a;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1.3rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.no-touch .nz-filter-block h4:hover {
+    color: #41307c;
+}
+
+.nz-filter-block h4::before {
+    /* arrow */
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    /*background: url("../img/nz-icon-arrow.svg") no-repeat center center;*/
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    -webkit-transition: -webkit-transform 0.3s;
+    -moz-transition: -moz-transform 0.3s;
+    transition: transform 0.3s;
+}
+
+.nz-filter-block h4.closed::before {
+    -webkit-transform: translateY(-50%) rotate(-90deg);
+    -moz-transform: translateY(-50%) rotate(-90deg);
+    -ms-transform: translateY(-50%) rotate(-90deg);
+    -o-transform: translateY(-50%) rotate(-90deg);
+    transform: translateY(-50%) rotate(-90deg);
+}
+
+.nz-filter-block input, .nz-filter-block select, .nz-filter-block .radio-label::before, .nz-filter-block .checkbox-label::before {
+    /* shared style for input elements */
+    font-family: "Open Sans", sans-serif;
+    border-radius: 0;
+    background-color: #ffffff;
+    border: 2px solid #e6e6e6;
+}
+
+.nz-filter-block input[type='search'], .nz-filter-block input[type='text'], .nz-filter-block select {
+    width: 100%;
+    padding: .8em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    box-shadow: none;
+}
+
+.nz-filter-block input[type='search']:focus, .nz-filter-block input[type='text']:focus, .nz-filter-block select:focus {
+    outline: none;
+    background-color: #ffffff;
+    border-color: #41307c;
+}
+
+.nz-filter-block input[type='search'] {
+    /* custom style for the search element */
+    border-color: transparent;
+    background-color: #e6e6e6;
+    /* prevent jump - ios devices */
+    font-size: 1.6rem !important;
+}
+
+.nz-filter-block input[type='search']::-webkit-search-cancel-button {
+    display: none;
+}
+
+.nz-filter-block .nz-select {
+    /* select element wrapper */
+    position: relative;
+}
+
+.nz-filter-block .nz-select::after {
+    /* switcher arrow for select element */
+    content: '';
+    position: absolute;
+    z-index: 1;
+    right: 14px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    display: block;
+    width: 16px;
+    height: 16px;
+    /*background: url("../img/nz-icon-arrow.svg") no-repeat center center;*/
+    pointer-events: none;
+}
+
+.nz-filter-block select {
+    cursor: pointer;
+    font-size: 1.4rem;
+}
+
+.nz-filter-block select::-ms-expand {
+    display: none;
+}
+
+.nz-filter-block .list li {
+    position: relative;
+    margin-bottom: .8em;
+}
+
+.nz-filter-block .list li:last-of-type {
+    margin-bottom: 0;
+}
+
+.nz-filter-block input[type=radio], .nz-filter-block input[type=checkbox] {
+    /* hide original check and radio buttons */
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    z-index: 2;
+}
+
+.nz-filter-block .checkbox-label, .nz-filter-block .radio-label {
+    padding-left: 24px;
+    font-size: 1.4rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.nz-filter-block .checkbox-label::before, .nz-filter-block .checkbox-label::after, .nz-filter-block .radio-label::before, .nz-filter-block .radio-label::after {
+    /* custom radio and check boxes */
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.nz-filter-block .checkbox-label::before, .nz-filter-block .radio-label::before {
+    width: 16px;
+    height: 16px;
+    left: 0;
+}
+
+.nz-filter-block .checkbox-label::after, .nz-filter-block .radio-label::after {
+    /* check mark - hidden */
+    display: none;
+}
+
+.nz-filter-block .checkbox-label::after {
+    /* check mark style for check boxes */
+    width: 16px;
+    height: 16px;
+    /*background: url("../img/nz-icon-check.svg") no-repeat center center;*/
+}
+
+.nz-filter-block .radio-label::before, .nz-filter-block .radio-label::after {
+    border-radius: 50%;
+}
+
+.nz-filter-block .radio-label::after {
+    /* check mark style for radio buttons */
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff;
+    left: 5px;
+}
+
+.nz-filter-block input[type=radio]:checked+label::before, .nz-filter-block input[type=checkbox]:checked+label::before {
+    border-color: #41307c;
+    background-color: #41307c;
+}
+
+.nz-filter-block input[type=radio]:checked+label::after, .nz-filter-block input[type=checkbox]:checked+label::after {
+    display: block;
+}
+
+@-moz-document url-prefix() {
+    /* hide custom arrow on Firefox - select element */
+    .nz-filter-block .nz-select::after {
+        display: none;
+    }
+}

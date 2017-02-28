@@ -24,10 +24,18 @@ var Collection = Backbone.Collection.extend({
     return m1.get('id');
   },
   doFetch(opts) {
-    SC.get('/tracks', {
-      q: opts.query, tag_list: opts.tag_list
-    }).then(function(tracks) {
-      this.reset(tracks);
+
+    if(!opts && this.next_href) {
+      return this.fetch();
+    }
+
+    return SC.get('/tracks', {
+      q: opts.query,
+      filter: 'public',
+      format: 'json',
+      client_id: config.client_id,
+      limit: config.pageSize,
+      linked_partitioning: 1
     });
   },
   get_sets(minutes) {
@@ -36,7 +44,6 @@ var Collection = Backbone.Collection.extend({
       var min = (duration/1000) / 60;
 
       if(min >= minutes) {
-        console.log(model.get('title'));
         return true;
       }
 

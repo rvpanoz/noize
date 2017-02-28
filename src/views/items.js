@@ -27,36 +27,30 @@ var ItemsView = Marionette.CompositeView.extend({
   onFetch(opts) {
     var opts = _.extend(opts);
 
-    this.collection.fetch({
-      data: {
-        q: opts.query,
-        filter: 'public',
-        format: 'json',
-        client_id: config.client_id,
-        limit: config.pageSize,
-        linked_partitioning: 1
-      },
-      success: _.bind(function(tracks) {
-        this.render();
-      }, this),
-      error(e) {
-        throw new Error(e);
-      },
-      failure(e) {
-        throw new Error(e);
+    this.collection.doFetch(opts).then(_.bind(function(response) {
+      if(response.next_href) {
+        this.collection.next_href = response.next_href;
       }
-    });
+      this.collection.reset(response.collection);
+      this.render();
+    }, this))
+    return false;
   },
   onDomRefresh() {
     if(this.collection.length) {
       this.collection.sort();
-      // this.sets(30);
-      // this.getUI('pagination').show();
+      this.getUI('pagination').show();
     }
   },
   onNext(e) {
     e.preventDefault();
-    this.collection.fetch();
+    this.collection.doFetch().then(_.bind(function(response) {
+      if(response.next_href) {
+        this.collection.next_href = response.next_href;
+      }
+      this.collection.reset(response.collection);
+      this.render();
+    }, this));
   },
   sets(mins) {
     var st = this.collection.get_sets(mins);

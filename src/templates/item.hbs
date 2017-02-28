@@ -1,13 +1,16 @@
-<td class="embed"></td>
-<td class="number text-center"><h3>{{likes_count}}</h3></td>
-<!-- <td class="number text-center"><h3>{{playback_count}}</h3></td> -->
-<td class="text-center">{{genre}}</td>
-<td class="text-center">
-  <img src="{{artwork_url}}">
-</td>
-<td class="text-center">
-  {{#if downloadable}}
-    <a href="{{download_url}}" target="_blank" class="download" download>
-      <i class="fa fa-download"></i> Download</a>
-  {{/if}}
-</td>
+<div class="artwork">
+  <img src="{{artwork_url}}" />
+</div>
+<div class="info">
+    <h3>{{title}}</h3>
+    <p></p>
+    <p>{{description_short}}..</p>
+    <div class="social">
+        <span class="fa fa-heart"> {{likes_count}} likes</span>
+        <span class="fa fa-comment"> {{comment_count}} comments</span>
+        <span class="fa fa-share"> {{reposts_count}} reposts</span>
+        {{#if downloadable}}
+            <a class="download" href="{{downloadableUrl}}"><span class="fa fa-download"> Download</span></a>
+        {{/if}}
+    </div>
+</div>

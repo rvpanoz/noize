@@ -18,8 +18,12 @@ module.exports = Backbone.Router.extend({
     }
 
     //load the view
-    this.navigate(JSON.stringify(url), {
-      trigger: true
-    });
+    app.onAppEvent('app:loadView', url);
+
+    //load the view
+    // this.navigate(JSON.stringify(url), {
+    //   trigger: true
+    // });
+
   }
 });

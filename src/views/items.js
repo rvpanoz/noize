@@ -4,13 +4,18 @@ const template = require('templates/items.hbs');
 const ItemView = require('./item');
 const Schema = require('schemas/item');
 
+const moment = require('moment');
+
 var ItemsView = Marionette.CompositeView.extend({
   template: template,
   childViewContainer: '.items',
   childView: ItemView,
   collectionEvents: {
     'sync': 'render',
-    'reset': 'render'
+    // 'reset': 'render'
+  },
+  ui: {
+    pagination: 'ul.pagination'
   },
   events: {
     'click .btn-next': 'onNext'
@@ -19,10 +24,6 @@ var ItemsView = Marionette.CompositeView.extend({
     _.bindAll(this, 'onFetch');
     this.collection = new Schema.Items();
     this.listenTo(app, 'fetch:items', this.onFetch, arguments);
-
-    // SC.get('users/panos-rv').then(function(user){
-    //   console.log('Panos', user);
-    // });
   },
   onFetch(opts) {
     var opts = _.extend(opts);
@@ -32,13 +33,17 @@ var ItemsView = Marionette.CompositeView.extend({
         q: opts.query,
         tags: opts.tags,
         filter: 'public',
+        created_at: {
+          // from: moment().startOf('year').format('yyyy-mm-dd hh:mm:ss'.toUpperCase())
+          // to: moment().endOf('year').format('yyyy-mm-dd hh:mm:ss'.toUpperCase())
+        },
         format: 'json',
         client_id: config.client_id,
         limit: config.pageSize,
         linked_partitioning: 1
       },
-      success: _.bind(function(r) {
-        this.collection.sort();
+      success: _.bind(function(tracks) {
+        this.render();
       }, this),
       error(e) {
         throw new Error(e);
@@ -48,9 +53,20 @@ var ItemsView = Marionette.CompositeView.extend({
       }
     });
   },
+  onDomRefresh() {
+    if(this.collection.length) {
+      this.collection.sort();
+      this.sets(30);
+      this.getUI('pagination').show();
+    }
+  },
   onNext(e) {
     e.preventDefault();
     this.collection.fetch();
+  },
+  sets(mins) {
+    var st = this.collection.get_sets(mins);
+    this.collection.reset(st);
   },
   downloadable() {
     var ds = this.collection.get_downloadable();

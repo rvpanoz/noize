@@ -1,9 +1,7 @@
 [{
         "name": "Techno"
     }, {
-        "name": "Dance & EDM"
-    }, {
-        "name": "Dancehall"
+      "name": "When we dip"
     }, {
         "name": "Deep House"
     }, {
@@ -22,5 +20,8 @@
         "name": "hoj"
     }, {
         "name": "playa tech"
+    },
+    {
+        "name": "lexer"
     }
 ]

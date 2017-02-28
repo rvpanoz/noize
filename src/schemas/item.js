@@ -4,7 +4,7 @@ const SC = require('soundcloud');
 
 var backboneSync = Backbone.sync;
 var Model = Backbone.Model.extend({
-
+  idAttribute: 'id'
 });
 
 var Collection = Backbone.Collection.extend({
@@ -13,18 +13,15 @@ var Collection = Backbone.Collection.extend({
   url: function() {
     if(this.next_href) {
       return this.next_href;
-    } else {
-      return "https://api.soundcloud.com/tracks";
     }
+    return config.api.tracks;
   },
   parse(data) {
     this.next_href = (data.next_href) ? data.next_href : null;
     return data.collection;
   },
   comparator(m1, m2) {
-    var d1 = moment(m1.get('created_at'));
-    var d2 = moment(m2.get('created_at'));
-    return d2 > d1;
+    return m1.get('id');
   },
   doFetch(opts) {
     SC.get('/tracks', {
@@ -33,11 +30,27 @@ var Collection = Backbone.Collection.extend({
       this.reset(tracks);
     });
   },
+  get_sets(minutes) {
+    var filtered = _.filter(this.models, function(model) {
+      var duration = model.get('duration') //millis
+      var min = (duration/1000) / 60;
+
+      if(min >= minutes) {
+        console.log(model.get('title'));
+        return true;
+      }
+
+      return false;
+    });
+
+    return filtered;
+  },
   get_downloadable() {
-    return _.filter(this.models, function(model) {
-      console.log(model.toJSON().downloadable);
+    var filtered = _.filter(this.models, function(model) {
       return model.get('downloadable');
     }, this);
+
+    return filtered;
   }
 });
 

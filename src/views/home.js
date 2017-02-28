@@ -31,10 +31,10 @@ var HomeView = Marionette.View.extend({
     e.preventDefault();
     var query = this.getUI('query').val();
     var tags = this.tags.join(",");
-    console.log(tags);
-    if(query && query.length) {
+
+    if(tags.length || (query && query.length)) {
       app.onAppEvent('fetch:items', {
-        query: query,
+        query: query || " ",
         tags: tags
       });
     }

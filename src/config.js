@@ -1,8 +1,10 @@
 module.exports = {
+  user: 'panos-rv',
   client_id: 'caa597c828eaadfad140af3da084e904',
-  redirect_uri: 'http://localhost:9090/demos/webcomponents/soundcloud/',
   api: {
-    url: 'http://127.0.0.1:3000'
+    url: 'http://localhost:9090',
+    tracks: 'https://api.soundcloud.com/tracks',
+    users: 'https://api.soundcloud.com/users',
   },
-  pageSize: 10
+  pageSize: 20
 }

@@ -4,14 +4,17 @@ const template = require('../templates/tag.hbs');
 
 var TagView = Marionette.View.extend({
   template: template,
-  tagName: 'li',
-  className: 'list-group-item',
+  tagName: 'a',
+  className: 'btn btn-light filter-button tag',
   events: {
-    'click a': 'onClick'
+    'click': 'onClick'
+  },
+  onAfterRender() {
+    console.log(this.model.get('name'));
   },
   onClick(e) {
     e.preventDefault();
-    this.$el.toggleClass('tag-selected');
+    this.$el.toggleClass('selected');
     this.triggerMethod('add:tag', this.model.get('name').toLowerCase());
   },
   serializeData() {

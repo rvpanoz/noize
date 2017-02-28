@@ -1,6 +1,6 @@
 const Backbone = require('backbone');
 const Marionette = require('backbone.marionette');
-const HomeView = require('views/home');
+const LayoutView = require('views/layout');
 const Router = require('./router');
 const config = require('./config');
 const Bootstrap = require('bootstrap/dist/js/bootstrap.min');
@@ -19,8 +19,7 @@ var app = Marionette.Application.extend({
      * initialize soundcloud
      */
     SC.initialize({
-      client_id: config.client_id,
-      redirect_uri: config.redirect_uri
+      client_id: config.client_id
     });
 
     /**
@@ -38,7 +37,7 @@ var app = Marionette.Application.extend({
     /**
      * Show layout view
      */
-    this.showView(new HomeView());
+    this.showView(new LayoutView());
 
     /**
      * Backbone history start

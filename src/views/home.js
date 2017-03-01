@@ -14,13 +14,17 @@ var HomeView = Marionette.View.extend({
     itemsRegion: '#items-content'
   },
   events: {
-    "click .btn-search": 'onSearch'
+    'click .erase': 'onErase',
+    'click .btn-search': 'onSearch'
   },
   ui: {
     query: 'input[name="query"]'
   },
   onRender() {
     this.showChildView('itemsRegion', new ItemsView());
+  },
+  onErase() {
+    this.getUI('query').val('');
   },
   onSearch(e) {
     e.preventDefault();

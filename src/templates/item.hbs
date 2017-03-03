@@ -1,42 +1,25 @@
-<div class="nz-div">
-    <a class="nz-bg nz-block"></a>
+<div class="row">
 
-    <div>
-        {{#if downloadable}}
-        <div class="nz-button">
-            <a href="{{downloadableUrl}}" download class="btn btn-primary btn-mini" data-show-count="false" data-size="large" data-show-screen-name="false" data-dnt="true"><i class="fa fa-download"></i> Download</a>
-        </div>
-        {{/if}}
-
-        <a title="{{title}}" href="{{parmalink_url}}" class="nz-avatarLink">
-            <img alt="{{title}}" src="{{artwork_url}}" class="nz-avatarImg">
+    <div class="col-md-2 col-sm-2">
+        <a href="#">
+          <img class="img-responsive" src="{{artwork_url}}" alt="{{title}}">
         </a>
-
-        <div class="nz-divUser">
-            <p>{{title}}</p>
-        </div>
-
-        <div class="nz-divStats">
-            <ul class="nz-Arrange">
-                <li class="nz-ArrangeSizeFit">
-                    <a href="#" title="{{likes_count}} likes">
-                        <span class="nz-StatLabel nz-block">Likes</span>
-                        <span class="nz-StatValue">{{likes_count}}</span>
-                    </a>
-                </li>
-                <li class="nz-ArrangeSizeFit">
-                    <a href="#" title="{{commnent_count}} comments">
-                        <span class="nz-StatLabel nz-block">Comments</span>
-                        <span class="nz-StatValue">{{comment_count}}</span>
-                    </a>
-                </li>
-                <li class="nz-ArrangeSizeFit">
-                    <a href="#" title="{{reposts_count}} reposts">
-                        <span class="nz-StatLabel nz-block">Reposts</span>
-                        <span class="nz-StatValue">{{reposts_count}}</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
     </div>
+
+    <div class="col-md-5 col-sm-5">
+        <h3>{{title}}</h3>
+        {{#if tag_list}}
+          <p>{{{tag_list}}}</p>
+        {{/if}}
+        <p class="minimize">{{description_short}}</p>
+        <a class="btn btn-primary" href="{{permalink_rul}}"> View on soundcloud
+          <i class="fa fa-angle-right"></i>
+        </a>
+        {{#if downloadable}}
+        <a class="btn btn-danger" href="{{downloadableUrl}}" download> Download
+          <i class="fa fa-angle-right"></i>
+        </a>
+        {{/if}}
+    </div>
+
 </div>

@@ -20,6 +20,25 @@ a {
     overflow-x: hidden;
 }
 
+.btn-primary {
+    color: #FFF;
+    background-color: #1ABC9C;
+}
+.btn {
+    border: none;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    outline: none;
+}
+
+.margin-r20 {
+  margin-right: 20px;
+}
+
 .search-query {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

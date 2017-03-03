@@ -22,12 +22,16 @@ var HomeView = Marionette.View.extend({
   },
   onRender() {
     this.showChildView('itemsRegion', new ItemsView());
+    this.onSearch();
   },
   onErase() {
     this.getUI('query').val('');
   },
   onSearch(e) {
-    e.preventDefault();
+    if(e) {
+      e.preventDefault();
+    }
+
     var query = this.getUI('query');
 
     if(!query.val().length > 1) {

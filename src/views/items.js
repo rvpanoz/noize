@@ -9,7 +9,7 @@ const moment = require('moment');
 var ItemsView = Marionette.CompositeView.extend({
   template: template,
   childView: ItemView,
-  childViewContainer: 'div.items',
+  childViewContainer: 'section#items',
   collectionEvents: {
     'sync': 'render'
   },

@@ -7,27 +7,24 @@ const moment = require('moment');
 
 var ItemView = Marionette.View.extend({
   template: template,
-  className: 'col-lg-4 col-md-4 col-sm-12 col-xs-12',
   events: {
     'click a.show-comments': 'showComments',
-    // 'click a.download': 'download'
+    'click a.more': 'onMore',
+    'click a.less': 'onLess'
+  },
+  onMore(e) {
+    e.preventDefault();
+    var _this = $(e.target);
+    _this.hide().prev().hide();
+    _this.next().show();
+  },
+  onLess(e) {
+    e.preventDefault();
+    var _this = $(e.target);
+    _this.parent().hide().prev().show().prev().show();
   },
   onRender() {
     this.$el.show();
-  },
-  download(e) {
-    e.preventDefault();
-
-    var id = this.model.get('id');
-
-    $.ajax({
-      url: config.api.url + '/tracks/download/' + id,
-      success() {
-        console.log(arguments);
-      }
-    });
-
-    return false;
   },
   showComments(e) {
     e.preventDefault();
@@ -38,23 +35,47 @@ var ItemView = Marionette.View.extend({
       }
     })
 
-    // $("#sidebar-wrapper").toggleClass("active");
     return false;
+  },
+  minimized_elements() {
+    var minimized_elements = this.$('p.minimize');
+
+    minimized_elements.each(function() {
+      var t = $(this).text();
+      if (t.length < 100) return;
+
+      $(this).html(
+        t.slice(0, 100) + '<span>... </span><a href="#" class="more">More</a>' +
+        '<span style="display:none;">' + t.slice(100, t.length) + ' <a href="#" class="less">Less</a></span>'
+      );
+    });
+  },
+  onDomRefresh() {
+    this.minimized_elements();
   },
   serializeData() {
     var model = this.model;
-
-
-    // var description = this.model.get('description').replace(/(<([^>]+)>)/ig,"");
     var isDownloadable = this.model.get('downloadable');
     var downloadableUrl = this.model.get('download_url') + '?client_id=' + config.client_id;
     var created_at = this.model.get('created_at');
-    //
+    var tag_list = "",
+      tag_list_field = this.model.get('tag_list');
+    var description = this.model.get('description');
+
+    if (tag_list_field) {
+      tag_list_field = tag_list_field.split(" ");
+      for (var z in tag_list_field) {
+        var _tag = String(tag_list_field[z]);
+        tag_list += '<span class="label label-info margin-r20">' + _tag + '</span>';
+      }
+    }
     return _.extend(model.toJSON(), {
       downloadableUrl: (isDownloadable) ? downloadableUrl : false,
+      description_short: description,
       day: moment(created_at).format('DD'),
       month: moment(created_at).format('MMM'),
-      year: moment(created_at).format('YYYY')
+      year: moment(created_at).format('YYYY'),
+      tag_list: (tag_list.length) ? tag_list : false
     });
   }
 });

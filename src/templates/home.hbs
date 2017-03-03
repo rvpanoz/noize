@@ -1,13 +1,15 @@
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div align="center" style="margin-top: 25px;">
-            <div class="input-group">
-                <input type="text" class="search-query form-control" placeholder=" search for music " autocomplete="on" name="query"/>
-                <span class="input-group-addon erase" style="border: 0; cursor: pointer;"><i class="fa fa-remove"></i></span>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div align="center" style="margin-top: 25px;">
+                <div class="input-group">
+                    <input type="text" class="search-query form-control" placeholder=" search for music " autocomplete="on" name="query" value="atish" />
+                    <span class="input-group-addon erase" style="border: 0; cursor: pointer;"><i class="fa fa-remove"></i></span>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-danger btn-search">Search</button>
             </div>
-            <br/>
-            <button type="submit" class="btn btn-danger btn-search">Search</button>
         </div>
     </div>
+    <div class="row" id="items-content"></div>
 </div>
-<div class="row" id="items-content"></div>

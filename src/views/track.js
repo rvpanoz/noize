@@ -28,7 +28,7 @@ const config = require('../config');
       'sync': 'render'
     },
     initialize(params) {
-      _.bindAll(this, 'renderVisual', 'onStopAnimation');
+      _.bindAll(this, 'renderVisual', 'onStopAnimation', 'updateProgress');
 
       //get track id
       var trackId = _.get(params, 'id');
@@ -58,11 +58,21 @@ const config = require('../config');
       this.analyser.connect(this.audioCtx.destination);
       this.analyser.fftSize = 64;
     },
-    onAttach() {
-      this.audioElement[0].addEventListener("timeupdate", this.updateProgress, false);
-      this.audioElement[0].addEventListener("canplay", _.bind(function () {}, this));
-    },
+
     onDomRefresh() {
+      //audio duration
+      this.duration = this.audioElement[0].duration;
+      console.log(this.duration);
+      //set finish time
+      var finishTimeMilli = this.duration * 1000;
+      var timeFinish = moment.duration(finishTimeMilli);
+      this.$('.time-finish').text(moment.utc(timeFinish.asMilliseconds()).format("HH:mm:ss"));
+
+      //add events
+      this.audioElement[0].addEventListener("progress", this.updateProgress, arguments);
+      this.audioElement[0].addEventListener("canplay", _.bind(function () {}, this));
+
+      //draw the graph
       this.draw();
     },
     onStopAnimation(e) {
@@ -91,7 +101,7 @@ const config = require('../config');
 
       // the data to visualize
       this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
-      this.planets = require('assets/files/planets');
+      this.planets = require('assets/files/planets-simple');
 
       // the planetarium
       this.planetarium = d3.select(this.svgContainer)
@@ -112,31 +122,24 @@ const config = require('../config');
           .attr("class", "planet-group")
           .attr("transform", "translate(" + x + "," + y + ")");
 
-          // draw planets and moon clusters
+          // draw planets with orbits
           planetGroup.selectAll("g.planet")
             .data(this.planets)
             .enter()
             .append("g")
             .attr("class", "planet-cluster").each(function(d, i) {
               d3.select(this).append("circle").attr("class", "orbit")
-                .attr("r", d.R);
-              d3.select(this).append("circle").attr("r", d.r).attr("cx",d.R)
-                .attr("cy", 0).attr("class", "planet");
-              d3.select(this).append("g").attr("transform", "translate(" + d.R + ",0)")
-                 .selectAll("g.moon").data(d.moons).enter().append("g")
-                 .attr("class", "moon-cluster").each(function(d, i) {
-                   d3.select(this).append("circle").attr("class", "orbit")
-                     .attr("r", d.R/2);
-                   d3.select(this).append("circle").attr("r", d.r/2).attr("cx",d.R)
-                     .attr("cy", 0).attr("class", "moon");
-                 })
-                 .attr("transform", function(d) {
-                   return "rotate(" + (d.phi0 + (delta * (d.speed))) + ")";
-                 });
+                .attr("r", d.R + (0.5 * d.R))
+              d3.select(this).append("circle")
+                .attr("r", d.r)
+                .attr("cx", d.R)
+                .attr("cy", d.R).attr("class", "planet");
       });
     },
+    /**
+     * deprecated
+     */
     renderVisual() {
-
       /**
       * perform an animation
       * through a call to window.requestAnimationFrame()
@@ -161,6 +164,7 @@ const config = require('../config');
 
       this.planetarium.exit().remove();
     },
+
     play: function (e) {
       var t0 = new Date();
       var delta = (Date.now() - t0);
@@ -169,17 +173,22 @@ const config = require('../config');
       //start playing
       this.audioElement[0].play();
 
-      // this.renderVisual();
+      this.audioElement[0].volume = 0.01;
+
+      //start timer
       this.timer = d3.timer(function() {
         var delta = (Date.now() - t0);
+        var speed = 0;
         _this.planetarium.selectAll(".planet-cluster").attr("transform", function(d) {
-          return "rotate(" + d.phi0 + delta * d.speed/200 + ")";
+          speed = -d.phi0 + (delta / 3600);
+          return "rotate(" + d.phi0 * speed + ")";
       });
     });
 
       this.getUI('stop').removeClass('hide');
       this.getUI('play').addClass('hide');
     },
+
     stop: function (e) {
       this.audioElement[0].pause();
       this.audioElement[0].currentTime = 0;
@@ -190,9 +199,35 @@ const config = require('../config');
       this.getUI('stop').addClass('hide');
       this.getUI('play').removeClass('hide');
     },
+
     updateProgress: function () {
-      console.log(arguments);
+      var progress = this.$('progress');
+      var timeContainer = this.$('.time-now');
+      var value = 0, timeValue;
+      var currentTime = this.audioElement[0].currentTime;
+      var duration = this.audioElement[0].duration;
+      if (currentTime > 0) {
+        value = Math.floor(100 * currentTime / duration);
+        timeValue = Math.floor(currentTime);
+      }
+
+      if(progress.length) {
+        progress.css({
+          width: value + "%",
+          'background-color': '#ff77cc'
+        });
+        var currenTimeMilli = currentTime * 1000;
+        var timeNow = moment.duration(currenTimeMilli);
+
+        this.$('.time-now').text(moment.utc(timeNow.asMilliseconds()).format("HH:mm:ss"));
+      }
     },
+
+    seek: function (e) {
+      e.preventDefault();
+      this.audioElement.currentTime += 30;
+    },
+
     getRandomColor() {
       var letters = '0123456789ABCDEF';
       var color = '#';
@@ -201,10 +236,7 @@ const config = require('../config');
       }
       return color;
     },
-    seek: function (e) {
-      e.preventDefault();
-      this.audioElement.currentTime += 30;
-    },
+
     generateRgbColor: function (d, i) {
       var color = 'rgb(a, 100, 0)';
       var find = "a";
@@ -214,6 +246,7 @@ const config = require('../config');
 
       return color;
     },
+
     serializeData() {
       var streamUrl = this.model.get('stream_url') + "?client_id=" + config.client_id;
       return _.extend(this.model.toJSON(), {

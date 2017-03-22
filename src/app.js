@@ -53,7 +53,6 @@ var app = Marionette.Application.extend({
        window.webkitRequestAnimationFrame ||
        window.mozRequestAnimationFrame ||
        function(callback){
-         console.log(1);
          window.setTimeout(callback, 1000 / 60);
        };
      })();

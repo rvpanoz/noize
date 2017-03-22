@@ -70,9 +70,13 @@ const config = require('../config');
        * Cancels an animation frame request
        * previously scheduled through a call to
        * window.requestAnimationFrame().
-       * @type {Number}
+       * @type {Number} deprecated
        */
-      window.cancelAnimationFrame(this.animation);
+      // window.cancelAnimationFrame(this.animation);
+
+      //use d3.timer tool :)
+      this.timer.stop();
+      return false;
     },
     draw() {
       //constants
@@ -82,6 +86,8 @@ const config = require('../config');
       var y = h/2;
       var t0 = new Date();
       var delta = Date.now() - t0;
+
+      var _this = this;
 
       // the data to visualize
       this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
@@ -127,10 +133,7 @@ const config = require('../config');
                  .attr("transform", function(d) {
                    return "rotate(" + (d.phi0 + (delta * (d.speed))) + ")";
                  });
-            })
-            .attr("transform", function(d) {
-              return "rotate(" + (d.phi0 + (delta * (d.speed/100))) + ")";
-            });
+      });
     },
     renderVisual() {
 
@@ -149,18 +152,31 @@ const config = require('../config');
       var angle = delta * speed;
 
       var transform = function(d) {
-        console.log(d);
-        return "rotate(" + (d.phi0 + (delta * speed)) + ")";
+        var r = d.R * 100;
+        return "rotate(" + r + ")";
       };
 
-      this.planetarium.selectAll(".planet-cluster, .moon-cluster")
+      this.planetarium.selectAll(".planet-cluster")
         .attr("transform", transform);
 
       this.planetarium.exit().remove();
     },
     play: function (e) {
+      var t0 = new Date();
+      var delta = (Date.now() - t0);
+      var _this = this;
+
+      //start playing
       this.audioElement[0].play();
-      this.renderVisual();
+
+      // this.renderVisual();
+      this.timer = d3.timer(function() {
+        var delta = (Date.now() - t0);
+        _this.planetarium.selectAll(".planet-cluster").attr("transform", function(d) {
+          return "rotate(" + d.phi0 + delta * d.speed/200 + ")";
+      });
+    });
+
       this.getUI('stop').removeClass('hide');
       this.getUI('play').addClass('hide');
     },

@@ -1,0 +1,19 @@
+.sun {
+    stroke: #666;
+    fill: #fed136;
+}
+
+.orbit {
+    stroke: #ccc;
+    fill: transparent;
+}
+
+.planet {
+    stroke: #666;
+    fill: #fff;
+}
+
+.moon {
+    stroke: #ccc;
+    fill: #fff;
+}

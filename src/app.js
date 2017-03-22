@@ -4,7 +4,6 @@ const LayoutView = require('views/layout');
 const Router = require('./router');
 const config = require('./config');
 const Bootstrap = require('bootstrap/dist/js/bootstrap.min');
-const themeJS = require('./assets/js/theme');
 const SC = require('soundcloud');
 
 var app = Marionette.Application.extend({
@@ -47,8 +46,18 @@ var app = Marionette.Application.extend({
     }
 
     /**
-     * Global app events
+     * requestAnimFrame
      */
+     window.requestAnimFrame = (function(){
+       return  window.requestAnimationFrame ||
+       window.webkitRequestAnimationFrame ||
+       window.mozRequestAnimationFrame ||
+       function(callback){
+         console.log(1);
+         window.setTimeout(callback, 1000 / 60);
+       };
+     })();
+
   },
   navigate(cls, params) {
     var url = {};
@@ -67,9 +76,11 @@ var app = Marionette.Application.extend({
   onAppEvent(event, opts) {
     this.trigger(event, opts);
   },
+
   updateUI() {
     console.log('app:updateUI');
   },
+
   wait(active) {
     var spinner = $('.loading');
     if (active == true) {
@@ -80,6 +91,7 @@ var app = Marionette.Application.extend({
       }, 1000);
     }
   },
+
   showMessage(message, type) {
     alert(message);
   }

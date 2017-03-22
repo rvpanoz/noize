@@ -1,19 +1,15 @@
 const config = require('../config');
-const moment = require('moment');
 
-var backboneSync = Backbone.sync;
-var Model = Backbone.Model.extend({
+var Tag = Backbone.Model.extend({
 
 });
 
-var Collection = Backbone.Collection.extend({
-  model: Model,
-  url: function() {
-    return "../assets/tags.json";
-  }
+var Tags = Backbone.Collection.extend({
+  url: 'public/tags.json',
+  model: Tag
 });
 
 module.exports = {
-  Tag: Model,
-  Tags: Collection
+  Tag: Tag,
+  Tags: Tags
 }

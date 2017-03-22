@@ -1,0 +1,5 @@
+/* overrides */
+
+section.discover .input-group-addon {
+  background-color: #fff !important;
+}

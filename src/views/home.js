@@ -1,58 +1,31 @@
-const Marionette = require('backbone.marionette');
-const template = require('../templates/home.hbs')
 const config = require('../config');
-const ItemsView = require('./items');
-const TagsView = require('./tags');
+const Marionette = require('backbone.marionette');
+const TagsView = require('views/tags');
+const template = require('templates/home.hbs');
+const moment = require('moment');
 
-const bootstrapCss = require('bootstrap/dist/css/bootstrap.css');
-const fontawesome = require('assets/font-awesome/css/font-awesome.min.css');
+require('assets/css/tags.css');
+
+var now = moment();
 
 var HomeView = Marionette.View.extend({
   template: template,
-  searchValue: '',
+  tagName: 'section',
+  id: 'discover',
+  className: 'discover',
+  date: now,
   regions: {
-    itemsRegion: '#items-content'
-  },
-  events: {
-    'click .erase': 'onErase',
-    'click .btn-search': 'onSearch'
-  },
-  ui: {
-    query: 'input[name="query"]'
+    'tags-content': '#tags-content'
   },
   onRender() {
-    this.showChildView('itemsRegion', new ItemsView());
-    this.onSearch();
+    //tags view
+    var tagsView = new TagsView();
+    this.showChildView('tags-content', tagsView);
   },
-  onErase() {
-    this.getUI('query').val('');
-  },
-  onSearch(e) {
-    if(e) {
-      e.preventDefault();
-    }
 
-    var query = this.getUI('query');
-
-    if(!query.val().length > 1) {
-      this.searchValue = '';
-      query.val('');
-      return;
-    }
-
-    this.searchValue = query.val();
-
-    if(query && query.length) {
-      app.onAppEvent('fetch:items', {
-        query: this.searchValue
-      });
-    }
-
-    return false;
-  },
   serializeData() {
     return {
-      title: 'Home'
+      title: 'Tags'
     }
   }
 });

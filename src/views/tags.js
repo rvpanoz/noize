@@ -1,25 +1,51 @@
+const config = require('../config');
 const Marionette = require('backbone.marionette');
-const Schema = require('schemas/tag');
 const template = require('templates/tags.hbs');
-const TagView = require('./tag');
+const Schema = require('schemas/tag');
+const TagView = require('views/tag-item');
 
-var ItemsView = Marionette.CompositeView.extend({
+var TagsView = Marionette.CompositeView.extend({
   template: template,
   childView: TagView,
-  className: 'tags',
+  className: 'tags-container',
+  childViewContainer: 'div.tags-list',
   collectionEvents: {
-    'reset': 'render'
+    'sync': 'render'
   },
-  childViewTriggers: {
-    'add:tag': 'child:add:tag'
+  events: {
+    'keypress #tag-typer': 'onTagTyperKeypress'
   },
-  onChildAddTag(tag) {
-    this.triggerMethod('add:tag', tag);
+  ui: {
+    tags: '.tags-list',
+    typer: '#tag-typer'
   },
-  initialize() {
+  initialize(opts) {
     this.collection = new Schema.Tags();
     this.collection.fetch();
+  },
+  onRender() {
+
+  },
+  onTagTyperKeypress(e) {
+    var key = e.which;
+    if (key == 13 || key == 44) {
+      e.preventDefault();
+      var tagName = this.getUI('typer').val();
+      if (tagName.length > 0) {
+        var tag = new Schema.Tag({
+          name: tagName
+        });
+        this.collection.add(tag);
+        this.render();
+      }
+    }
+  },
+  onDomRefresh() {
+
+  },
+  serializeData() {
+    return _.extend(this.collection.toJSON());
   }
 });
 
-module.exports = ItemsView;
+module.exports = TagsView;

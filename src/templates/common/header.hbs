@@ -1,41 +1,26 @@
-<a id="filters-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
-<nav id="sidebar-wrapper" class="">
-    <ul class="sidebar-nav">
-        <a id="filters-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-        <li class="sidebar-brand">
-            <a href="#"></a>
-        </li>
-        <li>
-            <div class="filters-container" style="margin: 10px;padding:10px;">
-                <form class="form">
-                    <div class="form-group">
-                        <label for="duration-from" class="control-label">Duration from (min)</label>
-                        <input type="text" name="duration-from" class="form-control" value="30">
-                    </div>
-                    <div class="form-group">
-                        <label for="duration-to" class="control-label">Duration to (min)</label>
-                        <input type="text" name="duration-to" class="form-control" value="60">
-                    </div>
-                    <div class="form-group">
-                        <label for="downloadable" class="control-label">Downloadable</label>
-                        <select class="form-control" name="downloadable">
-                          <option value="1"> Yes </option>
-                          <option value="2"> No </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <p class="text-center">
-                            <a href="#" class="btn btn-danger" style="color: #fff;" role="button">
-                                <i class="glyphicon glyphicon-search"></i> Search
-                            </a>
-                        </p>
-                    </div>
-                </form>
-            </div>
-        </li>
-    </ul>
-</nav>
+<!-- Navigation -->
+<div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header page-scroll">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+        </button>
+        <a class="navbar-brand page-scroll" href="#page-top">Noiz3</a>
+    </div>
 
-<div class="text-vertical-center">
-    <h1>Noize - a soundcloud client</h1>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="hidden">
+                <a href="#page-top"></a>
+            </li>
+            <li>
+                <a class="navigate" data-cls="home" href='#'>Home</a>
+            </li>
+            <li>
+                <a class="page-scroll" href="#about">About</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /.navbar-collapse -->
 </div>

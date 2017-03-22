@@ -1,0 +1,39 @@
+/** button styles **/
+
+.btn {
+    border: none;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    outline: none;
+}
+
+.btn-primary {
+    color: #FFF;
+    background-color: #1ABC9C;
+}
+
+.btn-dark {
+    border-radius: 0;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.btn-dark:hover, .btn-dark:focus, .btn-dark:active {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.btn-light {
+    border-radius: 0;
+    color: #333;
+    background-color: rgb(255, 255, 255);
+}
+
+.btn-light:hover, .btn-light:focus, .btn-light:active {
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+}

@@ -54,8 +54,10 @@ module.exports = {
       handlebars: 'handlebars/dist/handlebars.min.js',
       src: path.resolve(__dirname, 'src'),
       public: path.resolve(__dirname, 'src/public'),
+      assets: path.resolve(__dirname, 'src/assets'),
       templates: path.resolve(__dirname, 'src/templates/'),
       schemas: path.resolve(__dirname, 'src/schemas/'),
+      helpers: path.resolve(__dirname, 'src/helpers/'),
       views: path.resolve(__dirname, 'src/views/'),
       app: path.resolve(__dirname, 'src/app.js')
     }

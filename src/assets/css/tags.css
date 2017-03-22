@@ -1,0 +1,74 @@
+.tag-list {
+  background: white;
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 30px;
+  padding: 30px 40px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0px 3px 3px 0px rgba(50, 50, 50, 0.4);
+}
+.tag label.selected {
+  color: white;
+}
+.tag {
+  display: inline-block;
+  position: relative;
+  margin: 5px 10px 5px 0px;
+}
+.tag input[type=checkbox] {
+  opacity: 0;
+  position: absolute;
+  z-index: 300;
+  cursor: pointer;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.tag input[type=checkbox]:hover + label {
+  background: #6f5499;
+  color: white;
+}
+.tag label {
+  padding: 7px 34px 6px 18px;
+  position: relative;
+  z-index: 200;
+  color: #6f5499;
+  display: block;
+  border-radius: 16px;
+  background: #fed136;
+  transition: all 0.08s ease-in;
+}
+.tag .fa {
+  position: absolute;
+  z-index: 250;
+  right: 11px;
+  top: 9px;
+  color: white;
+  line-height: 0.95;
+}
+.tag .fa-check {
+  display: none;
+  top: 8px;
+  right: 10px;
+  transition: all 0.08s ease-in;
+}
+.tag input[type=checkbox]:checked + label {
+  background: #f94877;
+  animation: flick 0.08s;
+}
+.tag input[type=checkbox]:checked ~ .fa-plus {
+  display: none;
+}
+.tag input[type=checkbox]:checked ~ .fa-check {
+  animation: flick 0.08s;
+  display: block;
+}
+@keyframes flick {
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

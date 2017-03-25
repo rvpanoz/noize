@@ -173,7 +173,7 @@ const config = require('../config');
       //start playing
       this.audioElement[0].play();
 
-      this.audioElement[0].volume = 0.01;
+      this.audioElement[0].volume = 1;
 
       //start timer
       this.timer = d3.timer(function() {

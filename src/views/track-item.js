@@ -11,7 +11,7 @@ var TrackItemView = Marionette.View.extend({
   },
   onLoadTrack(e) {
     app.navigate('track', {
-      id: this.model.get('id')
+      trackId: this.model.get('id')
     });
   },
   serializeData() {

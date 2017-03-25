@@ -5,6 +5,7 @@ const template = require('../templates/layout.hbs')
 const HeaderView = require('./common/header');
 
 //css
+require('assets/css/normalize.css');
 require('bootstrap/dist/css/bootstrap.css');
 require('assets/font-awesome/css/font-awesome.min.css');
 require('assets/css/agency.min.css');

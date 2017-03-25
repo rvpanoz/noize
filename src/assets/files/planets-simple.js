@@ -2,70 +2,84 @@
 module.exports = [{
     label: 'Mercury',
     idx: 1,
-    R: 30,
-    r: 15,
+    R: 20,
+    r: 10,
     speed: 0,
-    phi0: 35,
+    phi0: 300,
     moons: [
     ]
   },
   {
     idx: 2,
     label: 'Venus',
-    R: 50,
-    r: 25,
+    R: 40,
+    r: 10,
     speed: 0,
-    phi0: 90,
+    phi0: 270,
     moons: [
     ]
   },
   {
     idx: 3,
     label: 'Earth',
-    R: 75,
-    r: 40,
+    R: 60,
+    r: 10,
     speed: 0,
-    phi0: 135,
+    phi0: 240,
     moons: []
   },
-  // {
-  //   idx: 4,
-  //   R: 99,
-  //   r: 10,
-  //   speed: 0,
-  //   phi0: 235,
-  //   moons: []
-  // },
-  // {
-  //   idx: 5,
-  //   R: 100,
-  //   r: 22,
-  //   speed: 0,
-  //   phi0: 135,
-  //   moons: []
-  // },
-  // {
-  //   idx: 6,
-  //   R: 88,
-  //   r: 18,
-  //   speed: 0,
-  //   phi0: 260,
-  //   moons: []
-  // },
-  // {
-  //   idx: 7,
-  //   R: 170,
-  //   r: 50,
-  //   speed: 0,
-  //   phi0: 180,
-  //   moons: []
-  // },
-  // {
-  //   idx: 8,
-  //   R: 66,
-  //   r: 15,
-  //   speed: 0,
-  //   phi0: 235,
-  //   moons: []
-  // }
+  {
+    idx: 4,
+    label: 'Mars',
+    R: 80,
+    r: 10,
+    speed: 0,
+    phi0: 210,
+    moons: []
+  },
+  {
+    idx: 5,
+    label: 'Jupiter',
+    R: 100,
+    r: 10,
+    speed: 0,
+    phi0: 180,
+    moons: []
+  },
+  {
+    idx: 6,
+    label: 'Saturn',
+    R: 120,
+    r: 10,
+    speed: 0,
+    phi0: 150,
+    moons: []
+  },
+  {
+    idx: 7,
+    label: 'Uranus',
+    R: 140,
+    r: 10,
+    speed: 0,
+    phi0: 120,
+    moons: []
+  },
+  {
+    idx: 8,
+    label: 'Neptune',
+    R: 160,
+    r: 10,
+    speed: 0,
+    phi0: 90,
+    moons: []
+  },
+  {
+    idx: 9,
+    label: 'Pluto',
+    R: 160,
+    r: 10,
+    speed: 0,
+    phi0: 45,
+    moons: []
+  }
 ];

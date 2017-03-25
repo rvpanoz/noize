@@ -1,48 +1,38 @@
-<div class="container padding-t50">
-    <div class="row">
-        <div class="col-lg-12 col-md-12">
-            <audio id="audio-content" crossorigin="anonymous" src="{{stream_url}}"></audio>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-md-12">
-          <div class="player-wrapper">
-              <div id="player">
-                  <img src="{{artwork_url}}" class="cover img-responsive" alt="{{title}}" />
-                  <div class="player-song">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="title">{{title}}</div>
-                        <div class="artist hide">{{description}}</div>
-                        <progress value="0" max="1"></progress>
-                        <div class="timestamps">
-                            <div class="time-now">0:00:00</div>
-                            <div class="time-finish">0:00:00</div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="actions">
-                            <div class="prev">
-                                <i class="fa fa-fast-backward"></i>
-                            </div>
-                            <div class="play">
-                                <i class="fa fa-play"></i>
-                                <i class="fa fa-stop hide"></i>
-                            </div>
-                            <div class="next">
-                                <i class="fa fa-fast-forward"></i>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
+<div class="row">
+  <div class="col-md-12">
+    <div id="planetarium"></div>
+    <div class="player-wrapper">
+        <div id="player">
+            <img src="{{artwork_url}}" class="cover img-responsive" alt="{{title}}" />
+            <div class="player-song">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="title">{{title}}</div>
+                  <div class="artist hide">{{description}}</div>
+                  <progress value="0" max="1"></progress>
+                  <div class="timestamps">
+                      <div class="time-now">0:00:00</div>
+                      <div class="time-finish">0:00:00</div>
                   </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="actions">
+                      <div class="prev">
+                          <i class="fa fa-fast-backward"></i>
+                      </div>
+                      <div class="play">
+                          <i class="fa fa-play"></i>
+                          <i class="fa fa-stop hide"></i>
+                      </div>
+                      <div class="next">
+                          <i class="fa fa-fast-forward"></i>
+                      </div>
+                  </div>
+                </div>
               </div>
-          </div>
+            </div>
         </div>
     </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div id="planetarium"></div>
-      </div>
-    </div>
+  </div>
 </div>
+<audio id="audio-content" crossorigin="anonymous" src="{{stream_url}}"></audio>

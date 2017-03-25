@@ -1,168 +1,173 @@
-*, *:before, *:after, ul, li, a, button, input, h1, h2, h3, h4, h5, h6, p, img, image, svg, path, g {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    background-color: transparent;
-    border: none;
-    text-decoration: none;
-    user-select: none;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
+    *, *:before, *:after, ul, li, a, button, input, h1, h2, h3, h4, h5, h6, p, img, image, svg, path, g {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: transparent;
+        border: none;
+        text-decoration: none;
+        user-select: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
     html {
-  background-color: #A6554B;
-  overflow: hidden;
-  -webkit-transition: background-color 0.5s ease;
-     -moz-transition: background-color 0.5s ease;
-       -o-transition: background-color 0.5s ease;
-          transition: background-color 0.5s ease;
-}
+      -webkit-transition: background-color 0.5s ease;
+      -moz-transition: background-color 0.5s ease;
+      -o-transition: background-color 0.5s ease;
+      transition: background-color 0.5s ease;
+    }
 
-body {
-  margin: 0;
-}
-    font-family: 'Roboto';
-    font-size: 14px;
-    color: #2f2f2f;
-}
+    body {
+        margin: 0;
+        font-family: 'Roboto';
+        font-size: 14px;
+        color: #2f2f2f;
+    }
 
-svg {
-  background-color: #e2e2e2;
-}
+    body.full {
+        padding: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        background: #7A419B;
+        min-height: 100vh;
+        background: -webkit-linear-gradient(315deg, #7c1599 0%, #921099 48%, #7e4ae8 100%);
+        background: linear-gradient(135deg, #7c1599 0%, #921099 48%, #7e4ae8 100%);
+        background-size: cover;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        overflow: hidden;
+    }
 
-svg:not(:root) {
-  overflow: hidden;
-}
+    svg {
+        background-color: #e2e2e2;
+    }
 
-ul {
-    list-style: none;
-}
+    svg:not(:root) {
+        overflow: hidden;
+    }
 
-/** hacks **/
+    ul {
+        list-style: none;
+    }
+    /** hacks **/
 
-nav, header {
-    background-color: #6f5499 !important;
-    background-image: none !important;
-}
+    nav, header {
+        background-color: #6f5499 !important;
+        background-image: none !important;
+    }
 
-section {
-    padding: 0px !important
-}
+    section {
+        padding: 0px !important
+    }
+    /**/
 
-/**/
+    .actions div {
+        margin: 10px;
+    }
 
-.actions div {
-    margin: 10px;
-}
+    .aligned {
+        text-align: center;
+        padding-bottom: 28%;
+    }
 
-.aligned {
-    text-align: center;
-    padding-bottom: 28%;
-}
+    .aligned_input {
+        text-align: center;
+        padding-bottom: -10%;
+    }
 
-.aligned_input {
-    text-align: center;
-    padding-bottom: -10%;
-}
+    .aligned_text {
+        text-align: center;
+        font-size: 88%;
+    }
 
-.aligned_text {
-    text-align: center;
-    font-size: 88%;
-}
+    .no:hover {
+        background: none;
+    }
 
-.no:hover {
-    background: none;
-}
+    .no:active {
+        background: none;
+    }
 
-.no:active {
-    background: none;
-}
+    .btn-custom {
+        background-color: black;
+        color: white;
+        transition-property: background, opacity;
+        transition-duration: 0.5s;
+    }
 
-.btn-custom {
-    background-color: black;
-    color: white;
-    transition-property: background, opacity;
-    transition-duration: 0.5s;
-}
+    .btn-custom:hover, .btn-custom:active, .btn-custom:focus {
+        cursor: pointer;
+        opacity: 0.5;
+        color: white;
+        background-color: white;
+    }
 
-.btn-custom:hover, .btn-custom:active, .btn-custom:focus {
-    cursor: pointer;
-    opacity: 0.5;
-    color: white;
-    background-color:white;
-}
+    .search-query {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-family: "Telefon Black", Sans-Serif;
+        font-size: 6rem;
+        font-weight: bold;
+        background: none;
+        color: #fed136;
+        box-shadow: none !important;
+        border: 0;
+        padding: 0;
+        width: 100%;
+        height: 100px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    }
 
-.search-query {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-family: "Telefon Black", Sans-Serif;
-    font-size: 6rem;
-    font-weight: bold;
-    background: none;
-    color: #fed136;
-    box-shadow: none !important;
-    border: 0;
-    padding: 0;
-    width: 100%;
-    height: 100px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-}
+    .text-vertical-center {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
 
-.text-vertical-center {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-}
+    .text-vertical-center h1 {
+        margin: 0;
+        padding: 0;
+        font-size: 4.5em;
+        font-weight: 700;
+    }
 
-.text-vertical-center h1 {
-    margin: 0;
-    padding: 0;
-    font-size: 4.5em;
-    font-weight: 700;
-}
+    hr.small {
+        max-width: 300px;
+        margin-bottom: 50px;
+    }
+    /* tell the SVG path to be a thin blue line without any area fill */
 
-hr.small {
-    max-width: 300px;
-    margin-bottom: 50px;
-}
+    path {
+        stroke: steelblue;
+        stroke-width: 1;
+        fill: none;
+    }
 
+    .line {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+    }
+    /** paddings and margins **/
 
-/* tell the SVG path to be a thin blue line without any area fill */
+    .margin-t100 {
+        margin-top: 100px;
+    }
 
-path {
-    stroke: steelblue;
-    stroke-width: 1;
-    fill: none;
-}
+    .margin-r20 {
+        margin-right: 20px;
+    }
 
-.line {
-    fill: none;
-    stroke: steelblue;
-    stroke-width: 2px;
-}
+    .padding-t50 {
+        padding-top: 50px;
+    }
 
-
-/** paddings and margins **/
-
-.margin-t100 {
-    margin-top: 100px;
-}
-
-.margin-r20 {
-    margin-right: 20px;
-}
-
-.padding-t50 {
-    padding-top: 50px;
-}
-
-.padding-t150 {
-    padding-top: 150px;
-}
+    .padding-t150 {
+        padding-top: 150px;
+    }

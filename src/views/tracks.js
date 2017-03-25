@@ -23,7 +23,7 @@ var TracksView = Marionette.CompositeView.extend({
     this.collection = new Schema.Tracks();
     this.collection.fetch({
       data: {
-        q: 'atish',
+        q: 'pattern drama',
         // genres: 'Deep House',
         filter: 'public',
         format: 'json',

@@ -99,7 +99,6 @@ var TrackView = Marionette.View.extend({
     var y = h / 2;
     var t0 = new Date();
     var delta = Date.now() - t0;
-
     var _this = this;
 
     // the data to visualize
@@ -112,14 +111,6 @@ var TrackView = Marionette.View.extend({
       .attr("width", w)
       .attr("height", h);
 
-    // the sun
-    this.planetarium
-      .append("circle")
-      .attr("r", 20)
-      .attr("cx", x)
-      .attr("cy", y)
-      .attr("class", "sun");
-
     // planet group
     var planetGroup = this.planetarium.append("g")
       .attr("class", "planet-group")
@@ -131,25 +122,20 @@ var TrackView = Marionette.View.extend({
       .enter()
       .append("g")
       .attr("class", "planet-cluster").each(function(d, i) {
-        if(i%2==0) {
-          d3.select(this).append("ellipse")
-            .attr("class", "orbit-ellipse")
-            .attr("rx", d.r)
-            .attr("ry", d.r * 2)
-            .attr("cx", d.R * 2)
-            .attr("cy", 0)
-            .attr('fill', _this.generateRgbColor)
-        }
         d3.select(this).append("circle")
           .attr("class", "orbit")
-          .attr("r", d.R * 2)
+          .attr("r", d.R * 1.5)
           .attr("cx", 0)
           .attr("cy", 0)
         d3.select(this).append("circle")
           .attr("r", d.r)
-          .attr("cx", d.R * 2)
+          .attr("cx", -d.R * 1.5)
           .attr("class", "planet");
-      });
+        d3.select(this).append("path")
+        .attr("d", "M 10,90 Q 100,15 200,70 Q 340,140 400,30") //Notation for an SVG path, from bl.ocks.org/mbostock/2565344
+        .style("fill", "none")
+        .style("stroke", "#AAAAAA");
+      })
   },
 
   play: function(e) {
@@ -171,17 +157,16 @@ var TrackView = Marionette.View.extend({
       //get frequency data
       _this.analyser.getByteFrequencyData(dataArray);
 
-      //start rotaaation
+      //start rotation
       _this.planetarium.selectAll(".planet-cluster")
-      .data(dataArray)
-      .attr("transform", function(d, i) {
-        speed =  d * 0.5;
-        return "rotate(" + speed + ")";
-      })
-      // .attr("transform", function(d, i) {
-      //   return "translate(" + d / 2 + "," + d / 2  + ")";
-      // });
+        .data(dataArray)
+        .attr("transform", function(d, i) {
+          d3.selectAll('path')
+          .attr("transform", "rotate(" + d + ", " + d / 2 + "," + (120 + 10) + ")");
+          return "translate(" + d + "," + -d / 2 + ") rotate(90)";
+        })
 
+      //clean up
       _this.planetarium.exit().remove();
     });
 
@@ -208,6 +193,8 @@ var TrackView = Marionette.View.extend({
       timeValue;
     var currentTime = this.audioElement[0].currentTime;
     var duration = this.audioElement[0].duration;
+    var currenTimeMilli = currentTime * 1000;
+    var timeNow = moment.duration(currenTimeMilli);
 
     if (progress.length && currentTime > 0) {
       value = Math.floor(100 * currentTime / duration);
@@ -217,9 +204,6 @@ var TrackView = Marionette.View.extend({
         width: value + "%",
         'background-color': '#ff77cc'
       });
-      var currenTimeMilli = currentTime * 1000;
-      var timeNow = moment.duration(currenTimeMilli);
-
       this.getUI('timeNow').text(moment.utc(timeNow.asMilliseconds()).format("HH:mm:ss"));
     }
   },
@@ -241,7 +225,7 @@ var TrackView = Marionette.View.extend({
   generateRgbColor: function(d, i) {
     var color = 'rgb(255,a,204)';
     var find = "a";
-    var rgb = Math.floor(Math.random() * 200);
+    var rgb = Math.floor(Math.random() * d);
     var re = new RegExp(find, 'g');
     color = color.replace(re, rgb);
 

@@ -20,12 +20,14 @@ var TrackView = Marionette.View.extend({
     play: 'i.fa-play',
     stop: 'i.fa-stop',
     player: '#player',
-    timeFinish: '.time-finish'
+    timeFinish: '.time-finish',
+    timeNow: '.time-now'
   },
   events: {
     'click i.fa-play': 'play',
     'click i.fa-stop': 'stop',
     'click i.fa-pause': 'pause',
+    'click i.fa-fast-forward': 'seek',
     'mouseenter #player': 'onPlayerEnter',
     'mouseleave #player': 'onPlayerLeave'
   },
@@ -90,7 +92,6 @@ var TrackView = Marionette.View.extend({
   },
 
   draw() {
-
     var hh = $('nav').height();
     var w = this.getUI('planetarium').width();
     var h = $(window).height() - (3 * hh);
@@ -130,6 +131,15 @@ var TrackView = Marionette.View.extend({
       .enter()
       .append("g")
       .attr("class", "planet-cluster").each(function(d, i) {
+        if(i%2==0) {
+          d3.select(this).append("ellipse")
+            .attr("class", "orbit-ellipse")
+            .attr("rx", d.r)
+            .attr("ry", d.r * 2)
+            .attr("cx", d.R * 2)
+            .attr("cy", 0)
+            .attr('fill', _this.generateRgbColor)
+        }
         d3.select(this).append("circle")
           .attr("class", "orbit")
           .attr("r", d.R * 2)
@@ -144,22 +154,37 @@ var TrackView = Marionette.View.extend({
 
   play: function(e) {
     var t0 = new Date();
-    var delta = (Date.now() - t0);
     var _this = this;
 
     //start playing
     this.audioElement[0].play();
-    this.audioElement[0].volume = 0.01;
+    // this.audioElement[0].volume = 0.01;
+
+    var bufferLength = this.analyser.frequencyBinCount;
+    var dataArray = new Uint8Array(bufferLength);
 
     //start timer
     this.timer = d3.timer(function() {
-      var delta = (Date.now() - t0);
+      var delta = (Date.now() - t0) / 1000;
       var speed = 0;
-      _this.planetarium.selectAll(".planet-cluster").attr("transform", function(d) {
-        speed = d.phi0 * (delta / 3600);
+
+      //get frequency data
+      _this.analyser.getByteFrequencyData(dataArray);
+
+      //start rotaaation
+      _this.planetarium.selectAll(".planet-cluster")
+      .data(dataArray)
+      .attr("transform", function(d, i) {
+        speed =  d * 0.5;
         return "rotate(" + speed + ")";
-      });
+      })
+      // .attr("transform", function(d, i) {
+      //   return "translate(" + d / 2 + "," + d / 2  + ")";
+      // });
+
+      _this.planetarium.exit().remove();
     });
+
     this.getUI('stop').removeClass('hide');
     this.getUI('play').addClass('hide');
   },
@@ -171,6 +196,7 @@ var TrackView = Marionette.View.extend({
     //event to stop animation
     this.trigger('stop:animation');
 
+    //hide-show controls
     this.getUI('stop').addClass('hide');
     this.getUI('play').removeClass('hide');
   },
@@ -182,12 +208,11 @@ var TrackView = Marionette.View.extend({
       timeValue;
     var currentTime = this.audioElement[0].currentTime;
     var duration = this.audioElement[0].duration;
-    if (currentTime > 0) {
+
+    if (progress.length && currentTime > 0) {
       value = Math.floor(100 * currentTime / duration);
       timeValue = Math.floor(currentTime);
-    }
 
-    if (progress.length) {
       progress.css({
         width: value + "%",
         'background-color': '#ff77cc'
@@ -195,28 +220,28 @@ var TrackView = Marionette.View.extend({
       var currenTimeMilli = currentTime * 1000;
       var timeNow = moment.duration(currenTimeMilli);
 
-      this.$('.time-now').text(moment.utc(timeNow.asMilliseconds()).format("HH:mm:ss"));
+      this.getUI('timeNow').text(moment.utc(timeNow.asMilliseconds()).format("HH:mm:ss"));
     }
   },
 
   seek: function(e) {
     e.preventDefault();
-    this.audioElement.currentTime += 30;
+    this.audioElement[0].currentTime += 30;
   },
 
   getRandomColor() {
-    var letters = '0123456789ABCDEF';
+    var letters = 'ff77cc';
     var color = '#';
     for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+      color += letters[Math.floor(Math.random() * 6)];
     }
     return color;
   },
 
   generateRgbColor: function(d, i) {
-    var color = 'rgb(a, 100, 0)';
+    var color = 'rgb(255,a,204)';
     var find = "a";
-    var rgb = Math.floor(Math.random() * 100);
+    var rgb = Math.floor(Math.random() * 200);
     var re = new RegExp(find, 'g');
     color = color.replace(re, rgb);
 

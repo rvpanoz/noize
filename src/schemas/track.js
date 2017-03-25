@@ -33,29 +33,6 @@ var Tracks = Backbone.Collection.extend({
     var cam2 = parseInt(m2.get('id'));
     return -(cam1 > cam2);
   },
-  doFetch(opts) {
-    // if(opts && opts.user) {
-    //   this.user = opts.user;
-    //   return this.fetch({
-    //     data: {
-    //       client_id: config.client_id,
-    //       limit: config.pageSize
-    //     }
-    //   });
-    // }
-
-    return SC.get('/tracks', {
-      q: 'atish mark slee hoj',
-      genres: 'Deep House',
-      duration: opts.duration,
-      created_at: opts.created_at,
-      filter: 'public',
-      format: 'json',
-      client_id: config.client_id,
-      limit: config.pageSize,
-      linked_partitioning: 1
-    });
-  },
   get_sets(minutes) {
     var filtered = _.filter(this.models, function(model) {
       var duration = model.get('duration') //millis

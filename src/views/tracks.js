@@ -24,7 +24,7 @@ var TracksView = Marionette.CompositeView.extend({
     this.collection.fetch({
       data: {
         q: 'atish',
-        genres: 'Deep House',
+        // genres: 'Deep House',
         filter: 'public',
         format: 'json',
         client_id: config.client_id,

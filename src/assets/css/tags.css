@@ -15,6 +15,7 @@
   display: inline-block;
   position: relative;
   margin: 5px 10px 5px 0px;
+  width: calc(100% - 15%);
 }
 .tag input[type=checkbox] {
   opacity: 0;

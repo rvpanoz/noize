@@ -18,9 +18,12 @@ var HeaderView = Marionette.View.extend({
   },
   onNavigate(e) {
     e.preventDefault();
+
+    var target = this.$(e.currentTarget);
     var cls = this.$(e.currentTarget).data('cls');
+
     if (cls) {
-      app.navigate(cls);
+      return app.navigate(cls);
     }
     return false;
   },

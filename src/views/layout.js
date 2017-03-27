@@ -11,7 +11,6 @@ require('assets/font-awesome/css/font-awesome.min.css');
 require('assets/css/agency.min.css');
 require('assets/css/app.css');
 require('assets/css/buttons.css');
-require('assets/css/overrides.css');
 require('assets/css/animate.min.css');
 
 var LayoutView = Marionette.View.extend({

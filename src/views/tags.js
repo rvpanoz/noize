@@ -1,8 +1,10 @@
-const config = require('../config');
+const config = require('config');
 const Marionette = require('backbone.marionette');
 const template = require('templates/tags.hbs');
 const Schema = require('schemas/tag');
 const TagView = require('views/tag-item');
+
+require('assets/css/tags.css');
 
 var TagsView = Marionette.CompositeView.extend({
   template: template,
@@ -23,9 +25,6 @@ var TagsView = Marionette.CompositeView.extend({
     this.collection = new Schema.Tags();
     this.collection.fetch();
   },
-  onRender() {
-
-  },
   onTagTyperKeypress(e) {
     var key = e.which;
     if (key == 13 || key == 44) {
@@ -39,9 +38,6 @@ var TagsView = Marionette.CompositeView.extend({
         this.render();
       }
     }
-  },
-  onDomRefresh() {
-
   },
   serializeData() {
     return _.extend(this.collection.toJSON());

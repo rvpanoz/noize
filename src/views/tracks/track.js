@@ -1,9 +1,12 @@
-const config = require('../config');
+const config = require('config');
 const Marionette = require('backbone.marionette');
 const Schema = require('schemas/track');
 const template = require('templates/track.hbs');
 const d3 = require('d3');
 const moment = require('moment');
+
+// Full circle
+const tau = 2 * Math.PI;
 
 require('assets/css/graph.css');
 require('assets/css/player.css');
@@ -64,7 +67,7 @@ var TrackView = Marionette.View.extend({
     this.audioSrc.connect(this.analyser);
     //connect analyser with audio contxt destination
     this.analyser.connect(this.audioCtx.destination);
-    this.analyser.fftSize = 64;
+    this.analyser.fftSize = 256;
   },
 
   onDomRefresh() {
@@ -74,7 +77,7 @@ var TrackView = Marionette.View.extend({
         var finishTime = this.duration * 1000; //milliseconds
         var timeFinish = moment.duration(finishTime);
         this.getUI('timeFinish').text(moment.utc(timeFinish.asMilliseconds()).format("HH:mm:ss"));
-      }, this), 3000);
+      }, this), 1000);
 
       //draw the graph
       this.draw();
@@ -93,81 +96,94 @@ var TrackView = Marionette.View.extend({
 
   draw() {
     var hh = $('nav').height();
-    var w = this.getUI('planetarium').width();
+    var w = this.getUI('planetarium').width() - 50;
     var h = $(window).height() - (3 * hh);
     var x = w / 2;
     var y = h / 2;
     var t0 = new Date();
-    var delta = Date.now() - t0;
-    var _this = this;
 
-    // the data to visualize
-    this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
-    this.planets = require('assets/files/planets-simple');
+    function drawArc(d, i, nodes) {
 
-    // the planetarium
-    this.planetarium = d3.select(this.svgContainer)
+      var arc = d3.arc()
+        .startAngle(d.phi0)
+        .endAngle(-d.phi0)
+        .innerRadius(d.r)
+        .outerRadius(d.R);
+
+      d3.select(this)
+        .attr("transform", "translate(" + x + "," + y + ")")
+        .attr("d", arc)
+        .style("fill", "#8FAAE5");
+    }
+
+    var data = require('assets/files/planets-simple');
+
+    // the planetarium-
+    this.board = d3.select(this.svgContainer)
       .append("svg")
       .attr("width", w)
-      .attr("height", h);
+      .attr("height", h)
 
-    // planet group
-    var planetGroup = this.planetarium.append("g")
-      .attr("class", "planet-group")
-      .attr("transform", "translate(" + x + "," + y + ")");
-
-    // draw planets with orbits
-    planetGroup.selectAll("g.planet")
-      .data(this.planets)
+    this.board.selectAll("path")
+      .data(data)
       .enter()
-      .append("g")
-      .attr("class", "planet-cluster").each(function(d, i) {
-        d3.select(this).append("circle")
-          .attr("class", "orbit")
-          .attr("r", d.R * 1.5)
-          .attr("cx", 0)
-          .attr("cy", 0)
-        d3.select(this).append("circle")
-          .attr("r", d.r)
-          .attr("cx", -d.R * 1.5)
-          .attr("class", "planet");
-        d3.select(this).append("path")
-        .attr("d", "M 10,90 Q 100,15 200,70 Q 340,140 400,30") //Notation for an SVG path, from bl.ocks.org/mbostock/2565344
-        .style("fill", "none")
-        .style("stroke", "#AAAAAA");
-      })
+      .append("path")
+      .each(drawArc)
   },
 
   play: function(e) {
-    var t0 = new Date();
+
     var _this = this;
+    var t0 = new Date();
+    var speed = 0.4;
+
+    // create a line function that can convert data[] into x and y points
+    var line = d3.line()
+      // assign the X function to plot our line as we wish
+      .x(function(d, i) {
+        // verbose logging to show what's actually being done
+        console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
+        // return the X coordinate where we want to plot this datapoint
+        return x(i);
+      })
+      .y(function(d) {
+        // verbose logging to show what's actually being done
+        console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
+        // return the Y coordinate where we want to plot this datapoint
+        return y(d);
+      })
+
 
     //start playing
     this.audioElement[0].play();
-    // this.audioElement[0].volume = 0.01;
 
     var bufferLength = this.analyser.frequencyBinCount;
     var dataArray = new Uint8Array(bufferLength);
+    var line = d3.line();
+
+    dataArray.sort();
 
     //start timer
     this.timer = d3.timer(function() {
-      var delta = (Date.now() - t0) / 1000;
-      var speed = 0;
+      var delta = (Date.now() - t0) / 1000; //seconds
 
-      //get frequency data
-      _this.analyser.getByteFrequencyData(dataArray);
+      _this.analyser.getByteTimeDomainData(dataArray); //get frequency data
+      // _this.analyser.getByteFrequencyData(dataArray);
 
-      //start rotation
-      _this.planetarium.selectAll(".planet-cluster")
-        .data(dataArray)
-        .attr("transform", function(d, i) {
-          d3.selectAll('path')
-          .attr("transform", "rotate(" + d + ", " + d / 2 + "," + (120 + 10) + ")");
-          return "translate(" + d + "," + -d / 2 + ") rotate(90)";
-        })
+      //animation
+      _this.board.selectAll('path')
+        // .data(dataArray)
+        // .transition()
+        // .delay(function(d, i, nodes) {
+        //   return delta;
+        // })
+        // .attr("transform", function(d, i) {
+        //   return "rotate(" + d + delta + ")";
+        // })
+        .attr('d', line(dataArray))
 
       //clean up
-      _this.planetarium.exit().remove();
+      _this.board.exit().remove();
     });
 
     this.getUI('stop').removeClass('hide');
@@ -250,6 +266,14 @@ var TrackView = Marionette.View.extend({
       pageTitle: 'Track',
       streamUrl: streamUrl
     });
+  },
+
+  onBeforeDestroy() {
+    this.stop();
+  },
+
+  onDestroy() {
+    //todo
   }
 });
 

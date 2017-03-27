@@ -1,30 +1,38 @@
-const config = require('../config');
+const config = require('config');
 const Marionette = require('backbone.marionette');
-const template = require('templates/tracks.hbs');
+const template = require('templates/tracks/list.hbs');
 const Schema = require('schemas/track');
-const TrackView = require('views/track-item');
+const TrackItemView = require('views/tracks/list-item');
 
 require('assets/css/tiles.css');
 
-var TracksView = Marionette.CompositeView.extend({
+var TracksListView = Marionette.CompositeView.extend({
+  idx: 0,
   template: template,
-  childView: TrackView,
+  childView: TrackItemView,
+  tagName: 'section',
   className: 'tracks-container',
   childViewContainer: 'div.tracks',
+  childViewTriggers: {
+    'item:rendered': 'child:item:rendered'
+  },
   collectionEvents: {
     'sync': 'render'
+  },
+  ui: {
+    wrapper: '.tracks-wrapper'
   },
   events: {
     'click a.show-list': 'onShowList',
     'click a.show-player': 'onShowPlayer'
   },
   initialize(opts) {
-    var user = opts.user || false;
     this.collection = new Schema.Tracks();
     this.collection.fetch({
       data: {
-        q: 'pattern drama',
+        q: 'mark slee atish',
         // genres: 'Deep House',
+        // tags: 'deep, house'
         filter: 'public',
         format: 'json',
         client_id: config.client_id,
@@ -32,17 +40,25 @@ var TracksView = Marionette.CompositeView.extend({
         linked_partitioning: 1
       }
     });
+
+    this.listenTo(this.collection, 'add', _.bind(this.onCollectionAdd, this), arguments);
   },
   onShowList(e) {
     e.preventDefault();
-    this.$('.tracks-wrapper').addClass('list-mode');
+    this.wrapper.addClass('list-mode');
   },
   onShowPlayer(e) {
     e.preventDefault();
-    this.$('.tracks-wrapper').removeClass('list-mode');
+    this.wrapper.removeClass('list-mode');
   },
-  onDomRefresh() {},
+  onChildItemRendered(item) {
+    
+  },
+  onCollectionAdd(model) {
+
+  },
   onRender() {
+    this.wrapper = this.getUI('wrapper');
     this.collection.sort();
   },
   serializeData() {
@@ -52,4 +68,4 @@ var TracksView = Marionette.CompositeView.extend({
   }
 });
 
-module.exports = TracksView;
+module.exports = TracksListView;

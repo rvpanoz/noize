@@ -51,6 +51,7 @@ module.exports = {
       "node_modules"
     ],
     alias: {
+      config: 'src/config',
       handlebars: 'handlebars/dist/handlebars.min.js',
       src: path.resolve(__dirname, 'src'),
       public: path.resolve(__dirname, 'src/public'),

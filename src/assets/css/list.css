@@ -7,7 +7,6 @@
 #tracks-content ol {
   counter-reset: li;
   overflow: hidden;
-  border: 1px solid #d9d9d9;
   margin: 0;
   padding: 0px;
 }
@@ -54,9 +53,6 @@
 #tracks-content ol li.active a .main-image:after,
 #tracks-content ol li.active a .no-main-image:after {
   color: #777;
-}
-#tracks-content li + li {
-  border-top: 1px solid #d9d9d9;
 }
 #tracks-content li span {
   display: block;

@@ -77,7 +77,7 @@
     }
 
     #search-wrap {
-        margin: 50px 120px;
+        margin: 100px 120px;
         display: inline-block;
         position: relative;
         float: right;
@@ -86,7 +86,7 @@
     }
 
     #button-wrap {
-        margin: 50px 50px;
+        margin: 100px 50px;
         display: inline-block;
         position: relative;
         float: left;
@@ -218,8 +218,8 @@
     }
 
     hr.small {
-        max-width: 300px;
-        margin-bottom: 50px;
+        max-width: 100%;
+        margin-bottom: 35px;
     }
 
     .line {

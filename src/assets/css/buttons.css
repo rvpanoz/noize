@@ -16,6 +16,56 @@
     background-color: #1ABC9C;
 }
 
+.sub-main{
+  width: 100%;
+  text-align: center;
+  margin-top: 75px;
+}
+
+.button-one, .button-two, .button-three{
+  text-align: center;
+  cursor: pointer;
+  font-size:24px;
+  margin: 0 auto;
+}
+
+/*Button Two*/
+.button-two {
+  border-radius: 4px;
+  background-color:##fed136;
+  border: none;
+  padding: 15px;
+  width: 200px;
+  transition: all 0.5s;
+  color: #6f5499;
+}
+
+
+.button-two span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button-two span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button-two:hover span {
+  padding-right: 25px;
+}
+
+.button-two:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
 .btn-dark {
     border-radius: 0;
     color: #fff;

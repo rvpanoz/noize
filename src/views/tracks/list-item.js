@@ -5,7 +5,7 @@ const moment = require('moment');
 
 var TrackItemView = Marionette.View.extend({
   template: template,
-  className: 'box animated',
+  tagName: 'li',
   events: {
     'click img': 'onLoadTrack'
   },
@@ -14,8 +14,9 @@ var TrackItemView = Marionette.View.extend({
       trackId: this.model.get('id')
     });
   },
-  onRender() {
-    this.triggerMethod('item:rendered', this);
+  onDomRefresh() {
+    if(this.isRendered())
+      this.triggerMethod('item:rendered', this);
   },
   serializeData() {
     return _.extend(this.model.toJSON());

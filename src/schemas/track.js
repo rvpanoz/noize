@@ -41,7 +41,6 @@ var Tracks = Backbone.Collection.extend({
       if(min >= minutes) {
         return true;
       }
-
       return false;
     });
 

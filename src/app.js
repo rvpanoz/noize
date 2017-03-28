@@ -28,6 +28,10 @@ var app = Marionette.Application.extend({
     this.router = new Router();
   },
   onStart() {
+
+    //global debuglog
+    window.dglog = console.log.bind(console, "DEBUG:");
+
     /**
      * setup config
      */

@@ -21,5 +21,6 @@ $.ajaxPrefilter(function(options) {
   options.url = options.url + "?client_id=" + config.client_id;
 });
 
+
 //start application
 app.start();

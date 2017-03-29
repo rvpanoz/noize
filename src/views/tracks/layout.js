@@ -3,6 +3,7 @@ const Marionette = require('backbone.marionette');
 const template = require('templates/tracks/layout.hbs');
 const TracksView = require('views/tracks/list');
 const TagsView = require('views/tags');
+const FiltersView = require('views/tracks/list-filters');
 
 var TracksLayoutView = Marionette.View.extend({
   template: template,
@@ -11,7 +12,8 @@ var TracksLayoutView = Marionette.View.extend({
   className: 'container',
   regions: {
     tracks: '#tracks-content',
-    tags: '#tags-content'
+    tags: '#tags-content',
+    filters: '#filters-content'
   },
   initialize() {
 
@@ -19,9 +21,11 @@ var TracksLayoutView = Marionette.View.extend({
   onRender() {
     var tracks = new TracksView();
     var tags = new TagsView();
+    var filters = new FiltersView();
 
     this.showChildView('tracks', tracks);
     this.showChildView('tags', tags);
+    this.showChildView('filters', filters);
   },
   serializeData() {
     return {

@@ -7,12 +7,13 @@ var TrackItemView = Marionette.View.extend({
   template: template,
   tagName: 'li',
   events: {
-    'click img': 'onLoadTrack'
+    'click a': 'onLoadTrack'
   },
   onLoadTrack(e) {
     app.navigate('tracks/track', {
       trackId: this.model.get('id')
     });
+    return false;
   },
   onDomRefresh() {
     if(this.isRendered())

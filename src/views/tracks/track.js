@@ -1,12 +1,9 @@
 const config = require('config');
 const Marionette = require('backbone.marionette');
 const Schema = require('schemas/track');
-const template = require('templates/track.hbs');
+const template = require('templates/tracks/track.hbs');
 const d3 = require('d3');
 const moment = require('moment');
-
-// Full circle
-const tau = 2 * Math.PI;
 
 require('assets/css/graph.css');
 require('assets/css/player.css');
@@ -53,7 +50,6 @@ var TrackView = Marionette.View.extend({
     //fetch track
     this.model.fetch();
   },
-
   onRender() {
     //get audio element
     this.audioElement = this.getUI('audioCtx');
@@ -69,7 +65,6 @@ var TrackView = Marionette.View.extend({
     this.analyser.connect(this.audioCtx.destination);
     this.analyser.fftSize = 256;
   },
-
   onDomRefresh() {
     if (this.model.get('stream_url')) {
       _.delay(_.bind(function() {
@@ -88,99 +83,93 @@ var TrackView = Marionette.View.extend({
     this.audioElement[0].addEventListener("canplay", _.bind(function() {}, this));
     this.player = this.getUI('player');
   },
-
   onStopAnimation(e) {
     this.timer.stop();
     return false;
   },
-
   draw() {
-    var hh = $('nav').height();
-    var w = this.getUI('planetarium').width() - 50;
-    var h = $(window).height() - (3 * hh);
+    var w = $(window).width();
+    var h = $(window).height();
     var x = w / 2;
     var y = h / 2;
     var t0 = new Date();
 
-    function drawArc(d, i, nodes) {
+    var bufferLength = this.analyser.frequencyBinCount;
+    var dataArray = new Uint8Array(bufferLength);
 
-      var arc = d3.arc()
-        .startAngle(d.phi0)
-        .endAngle(-d.phi0)
-        .innerRadius(d.r)
-        .outerRadius(d.R);
+    //get frequency data
+    _this.analyser.getByteTimeDomainData(dataArray);
 
-      d3.select(this)
-        .attr("transform", "translate(" + x + "," + y + ")")
-        .attr("d", arc)
-        .style("fill", "#8FAAE5");
-    }
-
-    var data = require('assets/files/planets-simple');
-
-    // the planetarium-
     this.board = d3.select(this.svgContainer)
       .append("svg")
       .attr("width", w)
       .attr("height", h)
+      .append('g');
 
-    this.board.selectAll("path")
-      .data(data)
-      .enter()
-      .append("path")
-      .each(drawArc)
+    this.board.selectAll('g')
+    .data([1, 4, 5])
+    .enter()
+    .append('ellipse')
+    .attr('cx', x/2 + 200)
+    .attr('cy', y/2 + 250)
+    .attr('rx', 25)
+    .attr('ry', 50)
+    .attr('r', 40)
+    .attr('fill', 'rgb(100, 200, 200)')
+    .attr('class', 'eye')
+
+    // this.board.append('ellipse')
+    // .attr('cx', x/2 + 400)
+    // .attr('cy', y/2 + 250)
+    // .attr('rx', 25)
+    // .attr('ry', 50)
+    // .attr('r', 40)
+    // .attr('fill', 'rgb(100, 200, 200)')
+    // .attr('class', 'eye')
+    //
+    // this.board.append('ellipse')
+    // .attr('cx', x/2 + 300)
+    // .attr('cy', y/2 + 300)
+    // .attr('rx', 10)
+    // .attr('ry', 15)
+    // .attr('r', 20)
+    // .attr('fill', 'rgb(100, 150, 200)')
+
   },
-
   play: function(e) {
 
     var _this = this;
     var t0 = new Date();
     var speed = 0.4;
 
-    // create a line function that can convert data[] into x and y points
-    var line = d3.line()
-      // assign the X function to plot our line as we wish
-      .x(function(d, i) {
-        // verbose logging to show what's actually being done
-        console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
-        // return the X coordinate where we want to plot this datapoint
-        return x(i);
-      })
-      .y(function(d) {
-        // verbose logging to show what's actually being done
-        console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
-        // return the Y coordinate where we want to plot this datapoint
-        return y(d);
-      })
-
-
     //start playing
     this.audioElement[0].play();
 
     var bufferLength = this.analyser.frequencyBinCount;
     var dataArray = new Uint8Array(bufferLength);
-    var line = d3.line();
 
-    dataArray.sort();
+    //get frequency data
+    _this.analyser.getByteTimeDomainData(dataArray);
+    // _this.analyser.getByteFrequencyData(dataArray);
 
     //start timer
     this.timer = d3.timer(function() {
       var delta = (Date.now() - t0) / 1000; //seconds
 
-      _this.analyser.getByteTimeDomainData(dataArray); //get frequency data
-      // _this.analyser.getByteFrequencyData(dataArray);
-
-      //animation
-      _this.board.selectAll('path')
-        // .data(dataArray)
-        // .transition()
-        // .delay(function(d, i, nodes) {
-        //   return delta;
-        // })
-        // .attr("transform", function(d, i) {
-        //   return "rotate(" + d + delta + ")";
-        // })
-        .attr('d', line(dataArray))
+      _this.board.selectAll('g')
+        .data(dataArray)
+        .append('g')
+        .transition()
+        .delay(function(d, i, nodes) {
+          return delta;
+        })
+        .append('ellipse')
+        .attr('cx', d/2 + 200)
+        .attr('cy', d/2 + 250)
+        .attr('rx', 25)
+        .attr('ry', 50)
+        .attr('r', 40)
+        .attr('fill', 'rgb(100, 200, 200)')
 
       //clean up
       _this.board.exit().remove();
@@ -189,7 +178,6 @@ var TrackView = Marionette.View.extend({
     this.getUI('stop').removeClass('hide');
     this.getUI('play').addClass('hide');
   },
-
   stop: function(e) {
     this.audioElement[0].pause();
     this.audioElement[0].currentTime = 0;
@@ -201,7 +189,6 @@ var TrackView = Marionette.View.extend({
     this.getUI('stop').addClass('hide');
     this.getUI('play').removeClass('hide');
   },
-
   updateProgress: function() {
     var progress = this.$('progress');
     var timeContainer = this.$('.time-now');
@@ -223,12 +210,10 @@ var TrackView = Marionette.View.extend({
       this.getUI('timeNow').text(moment.utc(timeNow.asMilliseconds()).format("HH:mm:ss"));
     }
   },
-
   seek: function(e) {
     e.preventDefault();
     this.audioElement[0].currentTime += 30;
   },
-
   getRandomColor() {
     var letters = 'ff77cc';
     var color = '#';
@@ -237,7 +222,6 @@ var TrackView = Marionette.View.extend({
     }
     return color;
   },
-
   generateRgbColor: function(d, i) {
     var color = 'rgb(255,a,204)';
     var find = "a";
@@ -247,19 +231,16 @@ var TrackView = Marionette.View.extend({
 
     return color;
   },
-
   onPlayerEnter(e) {
     this.player.css({
       opacity: 1
     })
   },
-
   onPlayerLeave(e) {
     this.player.css({
       opacity: 0.1
     });
   },
-
   serializeData() {
     var streamUrl = this.model.get('stream_url') + "?client_id=" + config.client_id;
     return _.extend(this.model.toJSON(), {
@@ -267,11 +248,9 @@ var TrackView = Marionette.View.extend({
       streamUrl: streamUrl
     });
   },
-
   onBeforeDestroy() {
     this.stop();
   },
-
   onDestroy() {
     //todo
   }

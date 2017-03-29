@@ -5,13 +5,13 @@ const template = require('../templates/layout.hbs')
 const HeaderView = require('./common/header');
 
 //css
-require('assets/css/normalize.css');
 require('bootstrap/dist/css/bootstrap.css');
 require('assets/font-awesome/css/font-awesome.min.css');
 require('assets/css/agency.min.css');
 require('assets/css/app.css');
 require('assets/css/buttons.css');
 require('assets/css/animate.min.css');
+require('assets/css/normalize.css');
 
 var LayoutView = Marionette.View.extend({
   template: template,

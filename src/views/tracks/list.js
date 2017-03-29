@@ -6,10 +6,11 @@ const TrackItemView = require('views/tracks/list-item');
 
 require('assets/css/list.css');
 
-var TracksListView = Marionette.CollectionView.extend({
+var TracksListView = Marionette.CompositeView.extend({
   template: template,
   childView: TrackItemView,
-  tagName: 'ol',
+  tagName: 'section',
+  className: 'cd-gallery',
   collectionEvents: {
     'sync': 'render'
   },
@@ -25,14 +26,12 @@ var TracksListView = Marionette.CollectionView.extend({
         linked_partitioning: 1
       }
     });
-
-    this.listenTo(this.collection, 'add', _.bind(this.onCollectionAdd, this), arguments);
-  },
-  onCollectionAdd(model) {
-
   },
   onRender() {
     this.collection.sort();
+  },
+  onDomRefresh() {
+
   },
   serializeData() {
     return _.extend(this.collection.toJSON(), {

@@ -23,9 +23,16 @@ var FiltersView = Marionette.View.extend({
   },
   triggerFilter(e) {
     e.preventDefault();
-    for(var z in this.ui) {
-      this.getUI(z).toggleClass('filter-is-visible');
+    var target = this.$(e.currentTarget);
+
+    for (var z in this.ui) {
+      var el = this.getUI(z);
+      el.toggleClass('filter-is-visible');
     }
+
+    this.getUI('cdfilter').css({
+      opacity: (!target.hasClass('cd-close')) ? 1 : 0
+    })
   },
   onCloseFilter(e) {
     e.preventDefault();

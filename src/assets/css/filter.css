@@ -26,7 +26,7 @@ Main Components
 
 .cd-main-content {
   position: relative;
-  min-height: 100vh;
+  min-height: 20vh;
 }
 .cd-main-content::after {
   clear: both;
@@ -288,9 +288,11 @@ xfilter
   left: 0;
   width: 300px;
   height: 100%;
+  min-height: 100vh;
   background: #ffffff;
   box-shadow: 4px 4px 20px transparent;
   z-index: 2;
+  opacity: 0;
   /* Force Hardware Acceleration in WebKit */
   -webkit-transform: translateZ(0);
   -moz-transform: translateZ(0);
@@ -353,15 +355,14 @@ xfilter
 .cd-filter.filter-is-visible .cd-close {
   opacity: 1;
 }
-
-/*@media only screen and (min-width: 1170px) {
+@media only screen and (min-width: 1170px) {
   .cd-filter {
     width: 20%;
   }
   .cd-filter form {
     padding: 70px 10%;
   }
-}*/
+}
 
 .cd-filter-trigger {
   position: absolute;

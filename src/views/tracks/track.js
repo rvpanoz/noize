@@ -88,6 +88,8 @@ var TrackView = Marionette.View.extend({
     return false;
   },
   draw() {
+    //up to heres
+
     var w = $(window).width();
     var h = $(window).height();
     var x = w / 2;
@@ -98,7 +100,7 @@ var TrackView = Marionette.View.extend({
     var dataArray = new Uint8Array(bufferLength);
 
     //get frequency data
-    _this.analyser.getByteTimeDomainData(dataArray);
+    this.analyser.getByteTimeDomainData(dataArray);
 
     this.board = d3.select(this.svgContainer)
       .append("svg")
@@ -107,13 +109,17 @@ var TrackView = Marionette.View.extend({
       .append('g');
 
     this.board.selectAll('g')
-    .data([1, 4, 5])
+    .data([20, 40, 80])
     .enter()
     .append('ellipse')
     .attr('cx', x/2 + 200)
     .attr('cy', y/2 + 250)
-    .attr('rx', 25)
-    .attr('ry', 50)
+    .attr('rx', function(d) {
+      return d;
+    })
+    .attr('ry', function(d) {
+      return d;
+    })
     .attr('r', 40)
     .attr('fill', 'rgb(100, 200, 200)')
     .attr('class', 'eye')
@@ -156,20 +162,24 @@ var TrackView = Marionette.View.extend({
     this.timer = d3.timer(function() {
       var delta = (Date.now() - t0) / 1000; //seconds
 
-      _this.board.selectAll('g')
+      _this.board.selectAll('ellipse')
         .data(dataArray)
-        .append('g')
         .transition()
         .delay(function(d, i, nodes) {
           return delta;
         })
-        .append('ellipse')
-        .attr('cx', d/2 + 200)
-        .attr('cy', d/2 + 250)
+        .attr('cx', function(d, i) {
+          return d;
+        })
+        .attr('cy', function(d, i) {
+          return d;
+        })
         .attr('rx', 25)
         .attr('ry', 50)
         .attr('r', 40)
-        .attr('fill', 'rgb(100, 200, 200)')
+        .attr('fill', function(d, i) {
+          return 'rgb(100, ' + d + ', 200)'
+        })
 
       //clean up
       _this.board.exit().remove();

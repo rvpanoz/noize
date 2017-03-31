@@ -9,8 +9,8 @@ require('assets/css/list.css');
 var TracksListView = Marionette.CompositeView.extend({
   template: template,
   childView: TrackItemView,
-  tagName: 'section',
-  className: 'cd-gallery',
+  tagName: 'ul',
+  className: 'rolldown-list',
   collectionEvents: {
     'sync': 'render'
   },

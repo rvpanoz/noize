@@ -94,6 +94,7 @@ var TrackView = Marionette.View.extend({
     var h = $(window).height();
     var x = w / 2;
     var y = h / 2;
+    // console.log()
     var t0 = new Date();
 
     var bufferLength = this.analyser.frequencyBinCount;
@@ -102,44 +103,36 @@ var TrackView = Marionette.View.extend({
     //get frequency data
     this.analyser.getByteTimeDomainData(dataArray);
 
-    this.board = d3.select(this.svgContainer)
-      .append("svg")
-      .attr("width", w)
-      .attr("height", h)
-      .append('g');
+    this.board = d3.select(this.svgContainer);
+    var width = +this.board.attr("width");
+    var height = +this.board.attr("height");
+    console.log(width, height)
+    this.angles = d3.range(0, 2 * Math.PI, Math.PI / 200);
 
-    this.board.selectAll('g')
-    .data([20, 40, 80])
-    .enter()
-    .append('ellipse')
-    .attr('cx', x/2 + 200)
-    .attr('cy', y/2 + 250)
-    .attr('rx', function(d) {
-      return d;
-    })
-    .attr('ry', function(d) {
-      return d;
-    })
-    .attr('r', 40)
-    .attr('fill', 'rgb(100, 200, 200)')
-    .attr('class', 'eye')
 
-    // this.board.append('ellipse')
-    // .attr('cx', x/2 + 400)
-    // .attr('cy', y/2 + 250)
-    // .attr('rx', 25)
-    // .attr('ry', 50)
-    // .attr('r', 40)
-    // .attr('fill', 'rgb(100, 200, 200)')
-    // .attr('class', 'eye')
-    //
-    // this.board.append('ellipse')
-    // .attr('cx', x/2 + 300)
-    // .attr('cy', y/2 + 300)
-    // .attr('rx', 10)
-    // .attr('ry', 15)
-    // .attr('r', 20)
-    // .attr('fill', 'rgb(100, 150, 200)')
+    this.path = this.board.append("g")
+      .attr("transform", "translate(" + x + "," + y + ")")
+      .attr("fill", "none")
+      .attr("stroke-width", 10)
+      .attr("stroke-linejoin", "round")
+      .selectAll("path")
+      .data(["cyan", "magenta", "yellow"])
+      .enter().append("path")
+      .attr("stroke", function(d) {
+        return d;
+      })
+      .style("mix-blend-mode", "darken")
+      .datum(function(d, i) {
+        return d3.radialLine()
+          .curve(d3.curveLinearClosed)
+          .angle(function(a) {
+            return a;
+          })
+          .radius(function(a) {
+            var t = d3.now() / 1000;
+            return 200 + Math.cos(a * 8 - i * 2 * Math.PI / 3 + t) * Math.pow((1 + Math.cos(a - t)) / 2, 3) * 32;
+          });
+      });
 
   },
   play: function(e) {
@@ -162,27 +155,10 @@ var TrackView = Marionette.View.extend({
     this.timer = d3.timer(function() {
       var delta = (Date.now() - t0) / 1000; //seconds
 
-      _this.board.selectAll('ellipse')
-        .data(dataArray)
-        .transition()
-        .delay(function(d, i, nodes) {
-          return delta;
-        })
-        .attr('cx', function(d, i) {
-          return d;
-        })
-        .attr('cy', function(d, i) {
-          return d;
-        })
-        .attr('rx', 25)
-        .attr('ry', 50)
-        .attr('r', 40)
-        .attr('fill', function(d, i) {
-          return 'rgb(100, ' + d + ', 200)'
-        })
+      _this.path.attr("d", function(d) {
+        return d(_this.angles);
+      });
 
-      //clean up
-      _this.board.exit().remove();
     });
 
     this.getUI('stop').removeClass('hide');

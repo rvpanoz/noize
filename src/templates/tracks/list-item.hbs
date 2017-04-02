@@ -1,8 +1,23 @@
-<a href="#">
-    <div class="main-image">
-      <img class="responsive" src="{{artwork_url}}"/>
+<div class="col-xs-12 col-sm-3">
+    <img src="{{artwork_url}}" alt="{{title}}" class="img-responsive img-circle" />
+</div>
+<div class="col-xs-12 col-sm-9">
+    <span class="name">{{title}}</span>
+    <hr class="small"/>
+    <p class="description">{{description}}</p>
+    <hr class="small"/>
+    <div class="meta pull-left">
+      <span class="fa fa-heart">&nbsp;{{likes_count}}</span>
+      <span class="fa fa-share">&nbsp;{{reposts_count}}</span>
+      <span class="fa fa-comments">&nbsp;{{comment_count}}</span>
     </div>
-    <span class="link-title">{{title}}</span>
-    <span class="link-excerpt"><time class="date" datetime="November 12 2012">Nov 12, 2012</time> / No Comments</span>
-</a>
-<hr class="small"/>
+    <div class="btn-toolbar pull-right">
+      {{#if downloadable}}
+          <a class="btn btn-mini btn-primary" href="{{download_url}}" download>
+          Download
+        </a>
+      {{/if}}
+      <a class="btn btn-mini btn-primary play" href="#">Play</a>
+    </div>
+</div>
+<div class="clearfix"></div>

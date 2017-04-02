@@ -1,113 +1,200 @@
 .rolldown-list {
-  text-align: left;
-  padding: 0;
-  margin: 0;
+    text-align: left;
+    padding: 0;
+    margin: 0;
 }
 
 .rolldown-list li {
-  padding: 1em;
-  margin-bottom: .125em;
-  display: block;
-  list-style: none;
-  text-transform: uppercase;
+    padding: 1em;
+    margin-bottom: .125em;
+    display: block;
+    list-style: none;
+    text-transform: uppercase;
 }
 
-.cssanimations .rolldown-list li {
-  visibility: hidden;
-  -moz-animation: rolldown 0.7s 1;
-  -webkit-animation: rolldown 0.7s 1;
-  animation: rolldown 0.7s 1;
-  -moz-transform-origin: 50% 0;
-  -ms-transform-origin: 50% 0;
-  -webkit-transform-origin: 50% 0;
-  transform-origin: 50% 0;
-  -moz-animation-fill-mode: forwards;
-  -webkit-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
+.rolldown-list li {
+    padding: 20px;
+    margin-top: 20px;
+    min-height: 145px;
+    background-color: rgba(255, 255, 255, 0.9);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0px 0px 2px #888888;
+    -moz-box-shadow: 0px 0px 2px #888888;
+    box-shadow: 0px 0px 2px #888888;
+    visibility: hidden;
+    -moz-animation: rolldown 0.7s 1;
+    -webkit-animation: rolldown 0.7s 1;
+    animation: rolldown 0.7s 1;
+    -moz-transform-origin: 50% 0;
+    -ms-transform-origin: 50% 0;
+    -webkit-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+    -moz-animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
 }
 
-.rolldown-list li:nth-child(2n) {
-  background-color: #4d4d4d;
-}
-
-.rolldown-list li:nth-child(2n+1) {
-  background-color: #333333;
-}
-
-#myList {
-  position: absolute;
-  width: 50%;
-  left: 50%;
-  margin-left: -25%;
-}
-
-#btnReload {
-  float: right;
-  color: #333;
-  background: #ccc;
-  text-transform: uppercase;
-  border: none;
-  padding: .5em 1em;
-}
-
-#btnReload:hover {
-  background: #ddd;
+.rolldown-list li span.title {
+  -webkit-transition: color 250ms ease;
+  display: inline-block;
+  position: relative;
 }
 
 @-moz-keyframes rolldown {
-  0% {
-    visibility: visible;
-    -moz-transform: rotateX(180deg) perspective(500px);
-    transform: rotateX(180deg) perspective(500px);
-  }
-  70% {
-    visibility: visible;
-    -moz-transform: rotateX(-20deg);
-    transform: rotateX(-20deg);
-  }
-  100% {
-    visibility: visible;
-    -moz-transform: rotateX(0deg);
-    transform: rotateX(0deg);
-  }
+    0% {
+        visibility: visible;
+        -moz-transform: rotateX(180deg) perspective(500px);
+        transform: rotateX(180deg) perspective(500px);
+    }
+    70% {
+        visibility: visible;
+        -moz-transform: rotateX(-20deg);
+        transform: rotateX(-20deg);
+    }
+    100% {
+        visibility: visible;
+        -moz-transform: rotateX(0deg);
+        transform: rotateX(0deg);
+    }
 }
+
 @-webkit-keyframes rolldown {
-  0% {
-    visibility: visible;
-    -webkit-transform: rotateX(180deg) perspective(500px);
-    transform: rotateX(180deg) perspective(500px);
-  }
-  70% {
-    visibility: visible;
-    -webkit-transform: rotateX(-20deg);
-    transform: rotateX(-20deg);
-  }
-  100% {
-    visibility: visible;
-    -webkit-transform: rotateX(0deg);
-    transform: rotateX(0deg);
-  }
+    0% {
+        visibility: visible;
+        -webkit-transform: rotateX(180deg) perspective(500px);
+        transform: rotateX(180deg) perspective(500px);
+    }
+    70% {
+        visibility: visible;
+        -webkit-transform: rotateX(-20deg);
+        transform: rotateX(-20deg);
+    }
+    100% {
+        visibility: visible;
+        -webkit-transform: rotateX(0deg);
+        transform: rotateX(0deg);
+    }
 }
+
 @keyframes rolldown {
-  0% {
-    visibility: visible;
-    -moz-transform: rotateX(180deg) perspective(500px);
-    -ms-transform: rotateX(180deg) perspective(500px);
-    -webkit-transform: rotateX(180deg) perspective(500px);
-    transform: rotateX(180deg) perspective(500px);
-  }
-  70% {
-    visibility: visible;
-    -moz-transform: rotateX(-20deg);
-    -ms-transform: rotateX(-20deg);
-    -webkit-transform: rotateX(-20deg);
-    transform: rotateX(-20deg);
-  }
-  100% {
-    visibility: visible;
-    -moz-transform: rotateX(0deg);
-    -ms-transform: rotateX(0deg);
-    -webkit-transform: rotateX(0deg);
-    transform: rotateX(0deg);
-  }
+    0% {
+        visibility: visible;
+        -moz-transform: rotateX(180deg) perspective(500px);
+        -ms-transform: rotateX(180deg) perspective(500px);
+        -webkit-transform: rotateX(180deg) perspective(500px);
+        transform: rotateX(180deg) perspective(500px);
+    }
+    70% {
+        visibility: visible;
+        -moz-transform: rotateX(-20deg);
+        -ms-transform: rotateX(-20deg);
+        -webkit-transform: rotateX(-20deg);
+        transform: rotateX(-20deg);
+    }
+    100% {
+        visibility: visible;
+        -moz-transform: rotateX(0deg);
+        -ms-transform: rotateX(0deg);
+        -webkit-transform: rotateX(0deg);
+        transform: rotateX(0deg);
+    }
+}
+
+
+/** custom **/
+
+.artwork-img, img {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border-radius: 2px;
+}
+
+.rolldown-list li span {
+    font-size: 16px;
+    color: #a0a29d;
+    margin-right: 40px;
+    height: 32px;
+    line-height: 32px;
+}
+
+.likes:before {
+    content: url("https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/group2-32.png");
+    vertical-align: -30%;
+    margin-right: 2%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    /* For IE8 and earlier */
+}
+
+.player:before {
+    content: url("https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/mp3.png");
+    vertical-align: -30%;
+    margin-right: 2%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    /* For IE8 and earlier */
+}
+
+.share:before {
+    content: url("https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-share-32.png");
+    vertical-align: -25%;
+    margin-right: 2%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    /* For IE8 and earlier */
+}
+
+.comments:before {
+    content: url("https://cdn2.iconfinder.com/data/icons/flat-ui-icons-24-px/24/bubble-24-24.png");
+    vertical-align: -25%;
+    margin-right: 2%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+    /* For IE8 and earlier */
+}
+
+.info {
+    width: 75%;
+    margin: 0;
+    margin-left: 5%;
+    display: inline-block;
+}
+
+.social {
+    padding-top: 20px;
+}
+
+/** cuctom **/
+.title {
+    display: inline-block;
+    font-size: 1.7em;
+    font-weight: bold;
+    padding: 5px 15px;
+}
+
+.name {
+    font-size: 14px !important;
+    font-weight: 700;
+    text-transform: initial;
+}
+
+p.description {
+  display: block;
+  /* Fallback for non-webkit */
+  display: -webkit-box;
+  max-height:200px;
+  height: 54.2px;
+  /* Fallback for non-webkit */
+  margin: 0 auto;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: initial;
+  line-height: 1.4;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

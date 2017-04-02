@@ -11,7 +11,8 @@ var FiltersView = Marionette.View.extend({
   events: {
     'click .cd-filter-trigger': 'triggerFilter',
     'click .cd-close': 'triggerFilter',
-    'click .cd-filter-block h4': 'onCloseFilter'
+    'click .cd-filter-block h4': 'onCloseFilter',
+    'click .apply-filters': 'onFiltersApply'
   },
   ui: {
     cdtrigger: '.cd-filter-trigger',
@@ -19,7 +20,18 @@ var FiltersView = Marionette.View.extend({
     cdclose: '.cd-close',
     cdtabfilter: 'cd-tab-filter',
     cdgallery: '.cd-gallery',
-    cdfilterblock: '.cd-filter-block'
+    cdfilterblock: '.cd-filter-block',
+    form: 'form'
+  },
+  onFiltersApply(e) {
+    e.preventDefault();
+    var data = this.getUI('form').serializeArray();
+
+    if(!data.length) return false;
+
+    //trigger event to filter tracks list collection with data;
+    this.triggerMethod('filter:data', data);
+    return false;
   },
   triggerFilter(e) {
     e.preventDefault();

@@ -63,6 +63,10 @@ nav, header {
     background-image: none !important;
 }
 
+#main-content {
+  padding-top: 60px;
+}
+
 .container-full {
     margin: 0 auto;
     width: 100%;

@@ -10,7 +10,7 @@ var TracksListView = Marionette.CompositeView.extend({
   template: template,
   childView: TrackItemView,
   tagName: 'ul',
-  className: 'rolldown-list',
+  className: 'rolldown-list list-group',
   collectionEvents: {
     'sync': 'render'
   },
@@ -31,7 +31,14 @@ var TracksListView = Marionette.CompositeView.extend({
     this.collection.sort();
   },
   onDomRefresh() {
-
+    this.$el.children().each(function() {
+      var delay = ($(this).index() / 4) + 's';
+      $(this).css({
+        webkitAnimationDelay: delay,
+        mozAnimationDelay: delay,
+        animationDelay: delay
+      });
+    });
   },
   serializeData() {
     return _.extend(this.collection.toJSON(), {

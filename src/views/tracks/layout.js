@@ -15,8 +15,8 @@ var TracksLayoutView = Marionette.View.extend({
     tags: '#tags-content',
     filters: '#filters-content'
   },
-  initialize() {
-
+  childViewTriggers: {
+    'filter:data':'child:filter:data'
   },
   onRender() {
     var tracks = new TracksView();
@@ -26,6 +26,16 @@ var TracksLayoutView = Marionette.View.extend({
     this.showChildView('tracks', tracks);
     this.showChildView('tags', tags);
     this.showChildView('filters', filters);
+  },
+  onChildFilterData(data) {
+    var tracksView = this.getChildView('tracks');
+
+    if(tracksView && tracksView.collection) {
+      var tracks = tracksView.collection;
+      var selected = tracks.get_downloadable();
+      tracks.reset(selected);
+    }
+    return false;
   },
   serializeData() {
     return {

@@ -33,6 +33,9 @@ var Tracks = Backbone.Collection.extend({
     var cam2 = parseInt(m2.get('id'));
     return -(cam1 > cam2);
   },
+  filter_data(data) {
+    return data;
+  },
   get_sets(minutes) {
     var filtered = _.filter(this.models, function(model) {
       var duration = model.get('duration') //millis

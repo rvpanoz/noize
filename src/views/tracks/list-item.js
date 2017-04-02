@@ -6,8 +6,9 @@ const moment = require('moment');
 var TrackItemView = Marionette.View.extend({
   template: template,
   tagName: 'li',
+  className: 'list-group-item',
   events: {
-    'click a': 'onLoadTrack'
+    'click a.play': 'onLoadTrack'
   },
   onLoadTrack(e) {
     app.navigate('tracks/track', {
@@ -16,7 +17,7 @@ var TrackItemView = Marionette.View.extend({
     return false;
   },
   onDomRefresh() {
-    if(this.isRendered())
+    if (this.isRendered())
       this.triggerMethod('item:rendered', this);
   },
   serializeData() {

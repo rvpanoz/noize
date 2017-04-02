@@ -26,7 +26,7 @@ Main Components
 
 .cd-main-content {
   position: relative;
-  min-height: 20vh;
+  min-height: 10vh;
 }
 .cd-main-content::after {
   clear: both;
@@ -217,68 +217,6 @@ xtab-filter
 
 /* --------------------------------
 
-xgallery
-
--------------------------------- */
-.cd-gallery {
-  padding: 26px 5%;
-  width: 100%;
-}
-.cd-gallery li {
-  margin-bottom: 1.6em;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  display: none;
-}
-.cd-gallery li.gap {
-  /* used in combination with text-align: justify to align gallery elements */
-  opacity: 0;
-  height: 0;
-  display: inline-block;
-}
-.cd-gallery img {
-  display: block;
-  width: 100%;
-}
-.cd-gallery .cd-fail-message {
-  display: none;
-  text-align: center;
-}
-@media only screen and (min-width: 768px) {
-  .cd-gallery {
-    padding: 40px 3%;
-  }
-  .cd-gallery ul {
-    text-align: justify;
-  }
-  .cd-gallery ul::after {
-    clear: both;
-    content: "";
-    display: table;
-  }
-  .cd-gallery li {
-    width: 48%;
-    margin-bottom: 2em;
-  }
-}
-@media only screen and (min-width: 1170px) {
-  .cd-gallery {
-    padding: 50px 2%;
-    float: right;
-    -webkit-transition: width 0.3s;
-    -moz-transition: width 0.3s;
-    transition: width 0.3s;
-  }
-  .cd-gallery li {
-    width: 23%;
-  }
-  .cd-gallery.filter-is-visible {
-    /* reduce width when filter is visible */
-    width: 80%;
-  }
-}
-
-/* --------------------------------
-
 xfilter
 
 -------------------------------- */
@@ -340,6 +278,8 @@ xfilter
   -moz-transition: opacity 0.3s;
   transition: opacity 0.3s;
   z-index: 3;
+  font-size: 40px;
+  text-decoration: none;
 }
 .no-touch .cd-filter .cd-close:hover {
   background: #32255f;
@@ -549,6 +489,10 @@ xcustom form elements
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.checkbox-label {
+  cursor: pointer;
+  margin-bottom: 1px !important;
 }
 .cd-filter-block .checkbox-label::before, .cd-filter-block .checkbox-label::after,
 .cd-filter-block .radio-label::before,

@@ -111,11 +111,11 @@ var TrackView = Marionette.View.extend({
 		var data = require('assets/files/planets-simple');
 
 		var rads = {
-			"sun": radius / 8,
-			"earthOrbit": radius / 2.5,
-			"earth": radius / 32,
-			"moonOrbit": radius / 16,
-			"moon": radius / 96
+			sun: radius / 8,
+			earthOrbit: radius / 2.5,
+			earth: radius / 32,
+			moonOrbit: radius / 16,
+			moon: radius / 96
 		};
 
 		// initialize board
@@ -193,6 +193,10 @@ var TrackView = Marionette.View.extend({
 		//start playing
 		this.audioElement[0].play();
 
+		//get frequency data
+		// _this.analyser.getByteTimeDomainData(dataArray);
+		// _this.analyser.getByteFrequencyData(dataArray);
+
 		var bufferLength = this.analyser.frequencyBinCount;
 		var dataArray = new Uint8Array(bufferLength);
 		var line = d3.line();
@@ -204,10 +208,16 @@ var TrackView = Marionette.View.extend({
 		this.timer = d3.timer(function () {
 			var delta = (Date.now() - t0) / 1000; //seconds
 
-			_this.analyser.getByteTimeDomainData(dataArray); //get frequency data
-			// _this.analyser.getByteFrequencyData(dataArray);
-
-			//TODO visualization...lol
+			//start rotation
+			_this.spaceBoard.selectAll(".moon")
+				.data(dataArray)
+				.transition()
+				.delay(function (d, i, nodes) {
+					return delta * 0.5;
+				})
+				.attr("transform", function (d, i) {
+					return "rotate(" + d / 2 + ")";
+				})
 
 			//clean up
 			_this.spaceBoard.exit().remove();

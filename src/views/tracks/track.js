@@ -36,30 +36,36 @@ var TrackView = Marionette.View.extend({
 	},
 	initialize(params) {
 		_.bindAll(this, 'onStopAnimation', 'updateProgress');
+
 		//get track id
 		var trackId = _.get(params, 'trackId');
-		//Instatiate a new track
+
 		this.model = new Schema.Track({
 			id: trackId
 		});
-		this.listenTo(this, 'stop:animation', this.onStopAnimation, arguments, this)
-		//fetch track
 		this.model.fetch();
+		this.listenTo(this, 'stop:animation', this.onStopAnimation, arguments, this);
 	},
 
 	onRender() {
 		//get audio element
 		this.audioElement = this.getUI('audioCtx');
+
 		//create audio context using HTML5 API
 		this.audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+
 		//create analyser using HTML5 API
 		this.analyser = this.audioCtx.createAnalyser();
+
 		//create audio source using HTML5 API
 		this.audioSrc = this.audioCtx.createMediaElementSource(this.audioElement[0]);
+
 		//connect audio source with analyser
 		this.audioSrc.connect(this.analyser);
+
 		//connect analyser with audio contxt destination
 		this.analyser.connect(this.audioCtx.destination);
+
 		//setup fftsize
 		this.analyser.fftSize = 256;
 	},
@@ -90,6 +96,7 @@ var TrackView = Marionette.View.extend({
   },
 
   draw() {
+		console.log(2);
     var hh = $('nav').height();
     var w = this.getUI('planetarium').width();
     var h = $(window).height() - (3 * hh);

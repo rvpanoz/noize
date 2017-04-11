@@ -4,6 +4,7 @@ const template = require('templates/tags.hbs');
 const Schema = require('schemas/tag');
 const TagView = require('views/tag-item');
 
+//tags css
 require('assets/css/tags.css');
 
 var TagsView = Marionette.CompositeView.extend({

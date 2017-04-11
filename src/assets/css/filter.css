@@ -15,6 +15,7 @@ Main Components
   font-size: 2.4rem;
   font-weight: 300;
 }
+
 @media only screen and (min-width: 1170px) {
   .cd-header {
     height: 200px;
@@ -272,7 +273,7 @@ xfilter
   color: #ffffff;
   font-size: 1.3rem;
   text-align: center;
-  background: #37296a;
+  background: #6f5499;
   opacity: 0;
   -webkit-transition: opacity 0.3s;
   -moz-transition: opacity 0.3s;
@@ -479,7 +480,7 @@ xcustom form elements
   margin: 0;
   padding: 0;
   opacity: 0;
-  z-index: 2;
+  z-index: 201;
 }
 .cd-filter-block .checkbox-label,
 .cd-filter-block .radio-label {

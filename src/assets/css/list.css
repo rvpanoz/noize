@@ -12,17 +12,25 @@
     text-transform: uppercase;
 }
 
+.meta span {
+  padding: 10px;
+}
+
+.list-group-item {
+  border: 0;
+}
+
 .rolldown-list li {
     padding: 20px;
     margin-top: 20px;
     min-height: 145px;
     background-color: rgba(255, 255, 255, 0.9);
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    -webkit-box-shadow: 0px 0px 2px #888888;
-    -moz-box-shadow: 0px 0px 2px #888888;
-    box-shadow: 0px 0px 2px #888888;
+    -webkit-border-radius: 1px;
+    -moz-border-radius: 1px;
+    border-radius: 1px;
+    -webkit-box-shadow: 0px 0px 1px #6f5499;
+    -moz-box-shadow: 0px 0px 1px #6f5499;
+    box-shadow: 0px 0px 1px #6f5499;
     visibility: hidden;
     -moz-animation: rolldown 0.7s 1;
     -webkit-animation: rolldown 0.7s 1;
@@ -113,15 +121,10 @@
 }
 
 .rolldown-list li span {
-    font-size: 16px;
     color: #a0a29d;
-    margin-right: 40px;
-    height: 32px;
-    line-height: 32px;
 }
 
 .likes:before {
-    content: url("https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/group2-32.png");
     vertical-align: -30%;
     margin-right: 2%;
     opacity: 0.4;
@@ -130,7 +133,6 @@
 }
 
 .player:before {
-    content: url("https://cdn0.iconfinder.com/data/icons/users-android-l-lollipop-icon-pack/24/mp3.png");
     vertical-align: -30%;
     margin-right: 2%;
     opacity: 0.4;
@@ -139,7 +141,6 @@
 }
 
 .share:before {
-    content: url("https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-share-32.png");
     vertical-align: -25%;
     margin-right: 2%;
     opacity: 0.4;
@@ -148,7 +149,6 @@
 }
 
 .comments:before {
-    content: url("https://cdn2.iconfinder.com/data/icons/flat-ui-icons-24-px/24/bubble-24-24.png");
     vertical-align: -25%;
     margin-right: 2%;
     opacity: 0.4;
@@ -169,16 +169,10 @@
 
 /** cuctom **/
 .title {
-    display: inline-block;
-    font-size: 1.7em;
-    font-weight: bold;
-    padding: 5px 15px;
-}
-
-.name {
-    font-size: 14px !important;
-    font-weight: 700;
-    text-transform: initial;
+  font-size: 14px !important;
+  font-weight: 700;
+  text-transform: initial;
+  padding: 0px 0px 15px 0px;
 }
 
 p.description {

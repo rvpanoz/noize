@@ -5,9 +5,6 @@ const template = require('templates/tracks/track.hbs');
 const d3 = require('d3');
 const moment = require('moment');
 
-// Full circle
-const tau = 2 * Math.PI;
-
 require('assets/css/graph.css');
 require('assets/css/player.css');
 
@@ -110,8 +107,10 @@ var TrackView = Marionette.View.extend({
 		//planets data
 		var data = require('assets/files/planets-simple');
 
+		var color = d3.scale.category20c();
+
 		var rads = {
-			sun: radius / 8,
+			'sun': radius / 8,
 			earthOrbit: radius / 2.5,
 			earth: radius / 32,
 			moonOrbit: radius / 16,

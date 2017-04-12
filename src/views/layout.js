@@ -7,11 +7,8 @@ const HeaderView = require('./common/header');
 //css
 require('bootstrap/dist/css/bootstrap.css');
 require('assets/font-awesome/css/font-awesome.min.css');
-require('assets/css/agency.min.css');
+require('assets/themes/paper/css/ct-paper.css');
 require('assets/css/app.css');
-require('assets/css/buttons.css');
-require('assets/css/animate.min.css');
-require('assets/css/normalize.css');
 
 var LayoutView = Marionette.View.extend({
   template: template,
@@ -19,9 +16,6 @@ var LayoutView = Marionette.View.extend({
   regions: {
     headerRegion: '#header-content',
     mainRegion: '#main-content'
-  },
-  childViewTriggers: {
-    'scroll:page': 'child:scroll:page'
   },
   initialize() {
     /**
@@ -35,17 +29,7 @@ var LayoutView = Marionette.View.extend({
       this.showChildView('mainRegion', app.activeView);
     }, this));
   },
-  onChildScrollPage(section) {
-    var $target = this.$(section);
 
-    if ($target.length) {
-      $('html, body').animate({
-        scrollTop: $target.offset().top
-      }, 1000);
-    }
-
-    return false;
-  },
   onRender() {
     var headerView = new HeaderView();
     this.showChildView('headerRegion', headerView);

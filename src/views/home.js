@@ -9,8 +9,7 @@ var now = moment();
 
 var HomeView = Marionette.View.extend({
   template: template,
-  tagName: 'section',
-  id: 'discover',
+  className: 'app-page',
   serializeData() {
     return {
       title: 'Home'

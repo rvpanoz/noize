@@ -13,7 +13,8 @@
 }
 
 .meta span {
-  padding: 10px;
+  display: inline;
+  margin-right: 10px;
 }
 
 .list-group-item {

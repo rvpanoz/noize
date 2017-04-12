@@ -6,7 +6,7 @@ const moment = require('moment');
 var TrackItemView = Marionette.View.extend({
   template: template,
   tagName: 'li',
-  className: 'list-group-item',
+  className: 'list-group-item track-item',
   events: {
     'click a.play': 'onLoadTrack'
   },

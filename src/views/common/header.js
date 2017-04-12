@@ -1,20 +1,14 @@
-const _ = require('lodash')
-const Marionette = require('backbone.marionette')
-const template = require('templates/common/header.hbs')
+const _ = require('lodash');
+const Marionette = require('backbone.marionette');
+const template = require('templates/common/header.hbs');
 
 var HeaderView = Marionette.View.extend({
   template: template,
   tagName: 'nav',
-  className: 'navbar navbar-default navbar-custom navbar-fixed-top',
+  className: 'navbar navbar-default',
   id: 'mainNav',
   events: {
-    'click a.navigate': 'onNavigate',
-    'click a.page-scroll': 'onPageScroll'
-  },
-  onPageScroll(evt) {
-    evt.preventDefault();
-    var section = this.$(evt.target).data('section');
-    this.triggerMethod('scroll:page', section);
+    'click a.navigate': 'onNavigate'
   },
   onNavigate(e) {
     e.preventDefault();
@@ -26,21 +20,7 @@ var HeaderView = Marionette.View.extend({
       return app.navigate(cls);
     }
     return false;
-  },
-  onAttach() {
-
-    // Closes the Responsive Menu on Menu Item Click
-    $('.navbar-collapse ul li a').click(function() {
-      $('.navbar-toggle:visible').click();
-    });
-
-    // Offset for Main Navigation
-    $('#mainNav').affix({
-      offset: {
-        top: 100
-      }
-    });
   }
 });
 
-module.exports = HeaderView
+module.exports = HeaderView;

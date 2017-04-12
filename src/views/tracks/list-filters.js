@@ -20,7 +20,8 @@ var FiltersView = Marionette.View.extend({
     'click .cd-filter-block h4': 'onCloseFilter',
     'click .apply-filters': 'onFiltersApply',
     'click .searchbox-icon': 'onToggleSearch',
-    'click .searchbox-input': 'onButtonUp'
+    'click .searchbox-input': 'onButtonUp',
+    'keydown': 'onKeyDown'
   },
   ui: {
     cdtrigger: '.cd-filter-trigger',
@@ -33,6 +34,13 @@ var FiltersView = Marionette.View.extend({
     searchButton: '.searchbox-icon',
     searchBox: '.search-box',
     inputBox: '.searchbox-input'
+  },
+  onKeyDown(e) {
+    var code = e.keyCode || e.which;
+    if (code == 13) {
+      
+    }
+    return false;
   },
   onRender(e) {
     var tags = new TagsView();

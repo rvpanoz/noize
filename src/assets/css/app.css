@@ -1,5 +1,5 @@
 #main-content {
-  padding-top: 60px;
+    padding-top: 60px;
 }
 
 #search-wrap {
@@ -106,7 +106,7 @@ Main Components
 }
 
 hr.small {
-  max-width: 100%;
+    max-width: 100%;
 }
 
 .line {
@@ -116,8 +116,9 @@ hr.small {
 }
 
 ul {
-  list-style: none;
+    list-style: none;
 }
+
 
 /** paddings and margins **/
 
@@ -137,28 +138,28 @@ ul {
     padding-top: 150px;
 }
 
+
 /** searchbox **/
 
 input.search-value {
-  height: 60px;
-  font-size: 55px;
-  display: inline-block;
-  font-weight: 100;
-  border: none;
-  outline: none;
-  color: #555;
-  padding: 3px;
-  padding-right: 45px;
-  width: 0px;
-  position: absolute;
-  top: 0;
-  right: 5px;
-  background: none;
-  z-index: 3;
-  transition: width .4s cubic-bezier(0.000, 0.795, 0.000, 1.000);
-  cursor: pointer;
+    height: 60px;
+    font-size: 55px;
+    display: inline-block;
+    font-weight: 100;
+    border: none;
+    outline: none;
+    color: #555;
+    padding: 3px;
+    padding-right: 45px;
+    width: 0px;
+    position: absolute;
+    top: 0;
+    right: 5px;
+    background: none;
+    z-index: 3;
+    transition: width .4s cubic-bezier(0.000, 0.795, 0.000, 1.000);
+    cursor: pointer;
 }
-
 
 input.search-value:focus {
     width: 800px;
@@ -186,4 +187,38 @@ input.search-action:hover {
     opacity: 0.8;
 }
 
+
 /** search box **/
+
+/** tooltip **/
+
+input[data-tooltip]:before {
+    position: absolute;
+    left: 0;
+    top: -40px;
+    background-color: #ff0000;
+    color: #ffffff;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    padding: 0 15px;
+    content: attr(data-tooltip);
+    white-space: nowrap;
+    display: none;
+}
+
+input[data-tooltip]:after {
+    position: absolute;
+    left: 15px;
+    top: -10px;
+    border-top: 7px solid #ff0000;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    content: "";
+    display: none;
+}
+
+input[data-tooltip]:hover:after, input[data-tooltip]:hover:before {
+    display: block;
+}
+/** tooltip **/

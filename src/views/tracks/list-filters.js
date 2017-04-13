@@ -8,98 +8,84 @@ require('assets/css/filter.css');
 require('assets/css/search-box.css');
 
 var FiltersView = Marionette.View.extend({
-  template: template,
-  className: 'filters-content',
-  isOpen: false,
-  regions: {
-    tags: '#tags-content'
-  },
-  events: {
-    'click .cd-filter-trigger': 'triggerFilter',
-    'click .cd-close': 'triggerFilter',
-    'click .cd-filter-block h4': 'onCloseFilter',
-    'click .apply-filters': 'onFiltersApply',
-    'click .searchbox-icon': 'onToggleSearch',
-    'click .searchbox-input': 'onButtonUp',
-    'keydown': 'onKeyDown'
-  },
-  ui: {
-    cdtrigger: '.cd-filter-trigger',
-    cdfilter: '.cd-filter',
-    cdclose: '.cd-close',
-    cdtabfilter: 'cd-tab-filter',
-    cdgallery: '.cd-gallery',
-    cdfilterblock: '.cd-filter-block',
-    filterform: 'form.form-filters',
-    searchButton: '.searchbox-icon',
-    searchBox: '.search-box',
-    inputBox: '.searchbox-input'
-  },
-  onKeyDown(e) {
-    var code = e.keyCode || e.which;
-    if (code == 13) {
-      
-    }
-    return false;
-  },
-  onRender(e) {
-    var tags = new TagsView();
-    this.showChildView('tags', tags);
-  },
-  onButtonUp(e) {
-    e.preventDefault();
-    var inputVal = $.trim(this.getUI('inputBox').val()).length;
+	template: template,
+	className: 'filters-content',
+	isOpen: false,
+	regions: {
+		tags: '#tags-content'
+	},
+	events: {
+		'click .cd-filter-trigger': 'triggerFilter',
+		'click .cd-close': 'triggerFilter',
+		'click .cd-filter-block h4': 'onCloseFilter',
+		'click .apply-filters': 'onFiltersApply',
+		'keydown': 'onKeyDown'
+	},
+	ui: {
+		cdtrigger: '.cd-filter-trigger',
+		cdfilter: '.cd-filter',
+		cdclose: '.cd-close',
+		cdtabfilter: 'cd-tab-filter',
+		cdgallery: '.cd-gallery',
+		cdfilterblock: '.cd-filter-block',
+		filterform: 'form.form-filters',
+		searchValue: '.search-value'
+	},
 
-    if (inputVal !== 0) {
-      this.getUI('searchButton').css('display', 'none');
-    } else {
-      this.getUI('inputBox').val('');
-      this.getUI('searchButton').css('display', 'block');
-    }
-  },
-  onToggleSearch(e) {
-    e.preventDefault();
+	onDomRefresh() {
+		this.getUI('searchValue').css({
+			width: '800px'
+		});
+	},
 
-    if (this.isOpen == false) {
-      this.getUI('searchBox').addClass('searchbox-open');
-      this.getUI('inputBox').focus();
-      this.isOpen = true;
-    } else {
-      this.getUI('searchBox').addClass('searchbox-open');
-      this.getUI('inputBox').focusout();
-      this.isOpen = false;
-    }
-    return false;
-  },
-  onFiltersApply(e) {
-    e.preventDefault();
-    var data = this.getUI('filterform').serializeArray();
+	onKeyDown(e) {
+		var code = e.keyCode || e.which;
+		if (code == 13) {
+			var queryString = this.getUI('searchValue').val();
+			if ($.trim(queryString).length) {
+				this.triggerMethod('fetch:data', queryString);
+				return false;
+			}
+		}
+	},
 
-    if (!data.length) return false;
+	onRender(e) {
+		var tags = new TagsView();
+		this.showChildView('tags', tags);
+	},
 
-    //trigger event to filter tracks list collection with data;
-    this.triggerMethod('filter:data', data);
-    return false;
-  },
-  triggerFilter(e) {
-    e.preventDefault();
-    var target = this.$(e.currentTarget);
+	onFiltersApply(e) {
+		e.preventDefault();
+		var data = this.getUI('filterform').serializeArray();
 
-    for (var z in this.ui) {
-      var el = this.getUI(z);
-      el.toggleClass('filter-is-visible');
-    }
+		if (!data.length) return false;
 
-    this.getUI('cdfilter').css({
-      opacity: (!target.hasClass('cd-close')) ? 1 : 0
-    })
-  },
-  onCloseFilter(e) {
-    e.preventDefault();
-    var target = $(e.currentTarget);
-    target.toggleClass('closed').siblings('.cd-filter-content').slideToggle(300);
-    return false;
-  }
+		//trigger event to filter tracks list collection with data;
+		this.triggerMethod('filter:data', data);
+		return false;
+	},
+
+	triggerFilter(e) {
+		e.preventDefault();
+		var target = this.$(e.currentTarget);
+
+		for (var z in this.ui) {
+			var el = this.getUI(z);
+			el.toggleClass('filter-is-visible');
+		}
+
+		this.getUI('cdfilter').css({
+			opacity: (!target.hasClass('cd-close')) ? 1 : 0
+		})
+	},
+
+	onCloseFilter(e) {
+		e.preventDefault();
+
+		var target = $(e.currentTarget);
+		target.toggleClass('closed').siblings('.cd-filter-content').slideToggle(300);
+		return false;
+	}
 });
 
 module.exports = FiltersView;

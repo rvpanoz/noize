@@ -10,7 +10,7 @@ var Track = Backbone.Model.extend({
 		return config.api.tracks;
 	},
 	parse: function (data) {
-		data.created_at = moment(new Date(data.created_at)).format('d/m/Y');
+		data.created_at = moment(new Date(data.created_at)).format('D/M/Y');
 		data.stream_url = data.stream_url + "?client_id=" + config.client_id;
 		return data;
 	}
@@ -28,7 +28,7 @@ var Tracks = Backbone.Collection.extend({
 	},
 	doFetch(queryString) {
 		var data = null;
-		
+
 		if (!queryString) {
 			console.error('queryString missing');
 			return false;

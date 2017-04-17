@@ -21,6 +21,8 @@ progress[value] {
     width: 600px;
 }
 
+
+
 .music_player .album-image {
     min-height: 100px;
     width: 100px;
@@ -73,8 +75,10 @@ body .music_player {
 }
 
 body .music_player .artist_img img {
-    height: 14rem;
-    width: 14rem;
+    height: 16rem;
+    width: 16rem;
+    display: inline-block;
+    padding: 15px;
 }
 
 body .music_player .time_slider {
@@ -149,7 +153,7 @@ body .music_player .now_playing p {
 
 body .music_info {
     top: 2rem;
-    right: 0;
+    right: 30px;
     position: absolute;
     width: 21rem;
 }

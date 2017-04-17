@@ -5,11 +5,6 @@ const template = require('templates/tracks/track.hbs');
 const d3 = require('d3');
 const moment = require('moment');
 
-//visualizer helper
-const visualizer = require('helpers/visualizer')
-
-const paths = require('public/paths');
-
 require('assets/css/graph.css');
 require('assets/css/player.css');
 
@@ -39,7 +34,7 @@ var TrackView = Marionette.View.extend({
     'sync': 'render'
   },
   initialize(params) {
-    _.bindAll(this, 'updateProgress', 'visualizeData');
+    _.bindAll(this, 'updateProgress');
 
     //get track id
     var trackId = _.get(params, 'trackId');
@@ -47,6 +42,8 @@ var TrackView = Marionette.View.extend({
     this.model = new Schema.Track({
       id: trackId
     });
+
+    this.visualizer = require('helpers/visualizer');
 
     //fetch model
     this.model.fetch();
@@ -99,11 +96,14 @@ var TrackView = Marionette.View.extend({
   },
 
   onDomRefresh() {
+    var svgWidth = this.getUI('planetarium').width();
+    var svgHeight = $(window).height() - $('nav').outerHeight();
+
     /**
      * [volume description]
      * @type {Number}
      */
-    this.audioElement[0].volume = 0.5;
+    this.audioElement[0].volume = 0.1;
 
     /**
      * [add listener for 'progress' event]
@@ -128,7 +128,7 @@ var TrackView = Marionette.View.extend({
         this.initSvg(svgContainer);
 
         // draw the circles
-        this.draw();
+        this.visualizer.draw.call(this, [svgWidth, svgHeight]);
 
       } catch (e) {
         if (this.timer) {
@@ -136,25 +136,7 @@ var TrackView = Marionette.View.extend({
         }
         throw new Error(e);
       }
-
     }, this));
-  },
-
-  draw() {
-    var svgWidth = this.getUI('planetarium').width();
-    var svgHeight = $(window).height() - $('nav').outerHeight();
-    var self = this;
-
-    // the data to visualize
-    var frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
-
-    //colors
-    var colors = d3.scaleOrdinal(d3.schemeCategory10);
-
-    // planet group
-    this.svg.append("g")
-      .attr("class", "circle-group")
-      .attr("transform", "translate(" + svgWidth / 2 + "," + svgHeight / 2 + ")");
   },
 
   play: function(e) {
@@ -164,27 +146,13 @@ var TrackView = Marionette.View.extend({
     this.audioElement[0].play();
 
     //start visualization using d3.timer function
-    // this.timer = d3.timer(this.visualizeData);
+    this.timer = d3.timer(_.bind(function() {
+      return this.visualizer.visualizeData.call(this);
+    }, this));
 
     //fix UI
     this.getUI('stop').removeClass('hide');
     this.getUI('play').addClass('hide');
-  },
-
-  visualizeData: function() {
-    var self = this;
-
-    // get frequencyData
-    var frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
-
-    //copy byte frequencyData into frequencyData array
-    this.analyser.getByteFrequencyData(frequencyData);
-
-    //colors
-    var colorPallete = d3.scaleOrdinal(d3.schemeCategory10);
-
-    //clean up
-    this.svg.exit().remove();
   },
 
   stop: function(e) {

@@ -27,6 +27,7 @@ var TrackView = Marionette.View.extend({
     'click i.fa-stop': 'stop',
     'click i.fa-pause': 'pause',
     'click i.fa-fast-forward': 'seek',
+    'click i.fa-fast-backward': 'seek',
     'xmouseenter #player': 'onPlayerEnter',
     'xmouseleave #player': 'onPlayerLeave'
   },
@@ -61,6 +62,48 @@ var TrackView = Marionette.View.extend({
     this.audioSrc.connect(this.analyser); //connect audio source with analyser
     this.analyser.connect(this.audioCtx.destination); //connect analyser with audio contxt destination
     this.analyser.fftSize = 256; //setup fftsize
+
+    var svgWidth = this.getUI('planetarium').width();
+    var svgHeight = $(window).height() - $('nav').outerHeight();
+
+    //get svg container
+    var svgContainer = this.svgContainer;
+
+    /**
+     * [volume description]
+     * @type {Number}
+     */
+    this.audioElement[0].volume = 1.0;
+
+    //init svg
+    this.initSvg(svgContainer);
+
+    // draw the circles
+    this.visualizer.draw.call(this, [svgWidth, svgHeight]);
+
+    /**
+     * [add listener for 'progress' event]
+     * @type {[type]}
+     */
+    this.audioElement[0].addEventListener('timeupdate', this.updateProgress, arguments);
+
+    /**
+     * [add listener for 'canplay' event]
+     * @type {[type]}
+     */
+    this.audioElement[0].addEventListener('canplay', _.bind(function() {
+
+      try {
+        //init timers
+        this.initTimers();
+
+      } catch (e) {
+        if (this.timer) {
+          this.stop();
+        }
+        throw new Error(e);
+      }
+    }, this));
   },
 
   initSvg(parent) {
@@ -96,47 +139,7 @@ var TrackView = Marionette.View.extend({
   },
 
   onDomRefresh() {
-    var svgWidth = this.getUI('planetarium').width();
-    var svgHeight = $(window).height() - $('nav').outerHeight();
 
-    /**
-     * [volume description]
-     * @type {Number}
-     */
-    this.audioElement[0].volume = 0.1;
-
-    /**
-     * [add listener for 'progress' event]
-     * @type {[type]}
-     */
-    this.audioElement[0].addEventListener('timeupdate', this.updateProgress, arguments);
-
-    /**
-     * [add listener for 'canplay' event]
-     * @type {[type]}
-     */
-    this.audioElement[0].addEventListener('canplay', _.bind(function() {
-
-      //get svg container
-      var svgContainer = this.svgContainer;
-
-      try {
-        //init timers
-        this.initTimers();
-
-        //init svg
-        this.initSvg(svgContainer);
-
-        // draw the circles
-        this.visualizer.draw.call(this, [svgWidth, svgHeight]);
-
-      } catch (e) {
-        if (this.timer) {
-          this.stop();
-        }
-        throw new Error(e);
-      }
-    }, this));
   },
 
   play: function(e) {
@@ -156,10 +159,12 @@ var TrackView = Marionette.View.extend({
   },
 
   stop: function(e) {
-    if(e)
+    if(e) {
       e.preventDefault();
+    }
 
     this.audioElement[0].pause();
+    this.audioElement[0].currentTime = 0;
 
     //stop time
     if (this.timer) {
@@ -175,7 +180,7 @@ var TrackView = Marionette.View.extend({
     var progress = this.getUI('progress');
     var currentTime = this.audioElement[0].currentTime;
     var duration = this.audioElement[0].duration;
-    console.log(currentTime, duration);
+    // console.log(currentTime, duration);
 
     var current_milliseconds = currentTime * 1000;
     var timeNow = moment.duration(current_milliseconds);
@@ -193,7 +198,17 @@ var TrackView = Marionette.View.extend({
 
   seek: function(e) {
     e.preventDefault();
+
+    var target = this.$(e.currentTarget);
     var percent = 60;
+    var duration = this.audioElement[0].duration;
+    var currentTime = this.audioElement[0].currentTime;
+
+    if(target.hasClass('fa-fast-backward')) {
+      percent = percent * -1;
+    }
+
+    console.log(percent);
     this.getUI('progress').value = percent / 100;
     this.audioElement[0].currentTime += percent;
   },

@@ -17,3 +17,12 @@
     stroke: #ccc;
     fill: #fff;
 }
+
+g.v-polygons {
+  fill: white;
+  stroke: lightsteelblue;
+}
+
+g.v-point {
+  fill: steelblue;
+}

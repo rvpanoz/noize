@@ -108,7 +108,7 @@ var TrackView = Marionette.View.extend({
 
   initSvg(parent) {
     var svgWidth = this.getUI('planetarium').width();
-    var svgHeight = $(window).height() - $('nav').outerHeight();
+    var svgHeight = $(window).height() - this.getUI('player').outerHeight() * 1.7;
     var self = this;
 
     function createSvg(parent, height, width) {
@@ -139,18 +139,22 @@ var TrackView = Marionette.View.extend({
   },
 
   onDomRefresh() {
-
+    //console.log('onDomRefresh');
   },
 
   play: function(e) {
     e.preventDefault();
+
+    var svgWidth = this.getUI('planetarium').width();
+    var svgHeight = $(window).height() - this.getUI('player').outerHeight() * 1.7;
+    var self = this;
 
     //start playing
     this.audioElement[0].play();
 
     //start visualization using d3.timer function
     this.timer = d3.timer(_.bind(function() {
-      return this.visualizer.visualizeData.call(this);
+      return this.visualizer.visualizeData.call(this, [svgWidth, svgHeight]);
     }, this));
 
     //fix UI

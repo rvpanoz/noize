@@ -20,16 +20,6 @@ var TracksListView = Marionette.CompositeView.extend({
 	onRender() {
 		this.collection.sort();
 	},
-	onDomRefresh() {
-		this.$el.children().each(function () {
-			var delay = ($(this).index() / 4) + 's';
-			$(this).css({
-				webkitAnimationDelay: delay,
-				mozAnimationDelay: delay,
-				animationDelay: delay
-			});
-		});
-	},
 	serializeData() {
 		return _.extend(this.collection.toJSON(), {
 			models: this.collection.models

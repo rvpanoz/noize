@@ -5,256 +5,254 @@ const template = require('templates/tracks/track.hbs');
 const d3 = require('d3');
 const moment = require('moment');
 
+//visualizer helper
+const visualizer = require('helpers/visualizer')
+
+const paths = require('public/paths');
+
 require('assets/css/graph.css');
 require('assets/css/player.css');
 
 var TrackView = Marionette.View.extend({
-	template: template,
-	tagName: 'section',
-	className: 'track-full',
-	svgContainer: '#planetarium',
-	ui: {
-		nav: '#mainNav',
-		audioCtx: '#audio-content',
-		planetarium: '#planetarium',
-		play: 'i.fa-play',
-		stop: 'i.fa-stop',
-		player: '#player',
-		timeFinish: '.time-finish',
-		timeNow: '.time-now'
-	},
-	events: {
-		'click i.fa-play': 'play',
-		'click i.fa-stop': 'stop',
-		'click i.fa-pause': 'pause',
-		'click i.fa-fast-forward': 'seek',
-		'mouseenter #player': 'onPlayerEnter',
-		'mouseleave #player': 'onPlayerLeave'
-	},
-	modelEvents: {
-		'sync': 'render'
-	},
-	initialize(params) {
-		_.bindAll(this, 'onStopAnimation', 'updateProgress');
+  template: template,
+  svgContainer: '#planetarium',
+  ui: {
+    nav: '#mainNav',
+    audioCtx: '#audio-content',
+    planetarium: '#planetarium',
+    play: 'i.fa-play',
+    stop: 'i.fa-stop',
+    player: '#player',
+    timeFinish: '.time-finish',
+    timeNow: '.time-now',
+    progress: 'progress'
+  },
+  events: {
+    'click i.fa-play': 'play',
+    'click i.fa-stop': 'stop',
+    'click i.fa-pause': 'pause',
+    'click i.fa-fast-forward': 'seek',
+    'xmouseenter #player': 'onPlayerEnter',
+    'xmouseleave #player': 'onPlayerLeave'
+  },
+  modelEvents: {
+    'sync': 'render'
+  },
+  initialize(params) {
+    _.bindAll(this, 'updateProgress', 'visualizeData');
 
-		//get track id
-		var trackId = _.get(params, 'trackId');
+    //get track id
+    var trackId = _.get(params, 'trackId');
 
-		this.model = new Schema.Track({
-			id: trackId
-		});
-		this.model.fetch();
-		this.listenTo(this, 'stop:animation', this.onStopAnimation, arguments, this);
-	},
+    this.model = new Schema.Track({
+      id: trackId
+    });
 
-	onRender() {
-		//get audio element
-		this.audioElement = this.getUI('audioCtx');
-
-		//create audio context using HTML5 API
-		this.audioCtx = new(window.AudioContext || window.webkitAudioContext)();
-
-		//create analyser using HTML5 API
-		this.analyser = this.audioCtx.createAnalyser();
-
-		//create audio source using HTML5 API
-		this.audioSrc = this.audioCtx.createMediaElementSource(this.audioElement[0]);
-
-		//connect audio source with analyser
-		this.audioSrc.connect(this.analyser);
-
-		//connect analyser with audio contxt destination
-		this.analyser.connect(this.audioCtx.destination);
-
-		//setup fftsize
-		this.analyser.fftSize = 256;
-	},
-
-	onDomRefresh() {
-    if (this.model.get('stream_url')) {
-      _.delay(_.bind(function() {
-        this.duration = this.audioElement[0].duration;
-        var finishTime = this.duration * 1000; //milliseconds
-        var timeFinish = moment.duration(finishTime);
-        this.getUI('timeFinish').text(moment.utc(timeFinish.asMilliseconds()).format("HH:mm:ss"));
-      }, this), 3000);
-
-      //draw the graph
-      this.draw();
-    }
-
-    //add events
-    this.audioElement[0].addEventListener("progress", this.updateProgress, arguments);
-    this.audioElement[0].addEventListener("canplay", _.bind(function() {}, this));
-    this.player = this.getUI('player');
+    //fetch model
+    this.model.fetch();
   },
 
-  onStopAnimation(e) {
-		if(this.timer)
-    	this.timer.stop();
-    return false;
+  onRender() {
+    /**
+     * [create audio source and analyser]
+     * @type {[type]}
+     */
+    this.audioElement = this.getUI('audioCtx'); //get audio element
+    this.audioCtx = new(window.AudioContext || window.webkitAudioContext)(); //create audio context using HTML5 API
+    this.analyser = this.audioCtx.createAnalyser(); //create analyser using HTML5 API
+    this.audioSrc = this.audioCtx.createMediaElementSource(this.audioElement[0]); //create audio source using HTML5 API
+    this.audioSrc.connect(this.analyser); //connect audio source with analyser
+    this.analyser.connect(this.audioCtx.destination); //connect analyser with audio contxt destination
+    this.analyser.fftSize = 256; //setup fftsize
+  },
+
+  initSvg(parent) {
+    var svgWidth = this.getUI('planetarium').width();
+    var svgHeight = $(window).height() - $('nav').outerHeight();
+    var self = this;
+
+    function createSvg(parent, height, width) {
+      return d3.select(parent).append('svg').attr('height', height).attr('width', width);
+    }
+
+    this.svg = createSvg(parent, svgHeight, svgWidth);
+    return this.svg;
+  },
+
+  initTimers() {
+    function calculateTotalValue(length) {
+      var milliseconds = length * 1000;
+      var timeFinish = moment.duration(milliseconds);
+      return moment.utc(timeFinish.asMilliseconds()).format("HH:mm:ss");
+    }
+
+    var player = this.audioElement[0];
+    var length = player.duration;
+    var current_time = player.currentTime;
+
+    // calculate total length of value
+    var totalLength = calculateTotalValue(length);
+    this.getUI('timeFinish').text(totalLength);
+
+    var timeNow = moment.duration();
+    this.getUI('timeNow').text(moment.utc(timeNow.asMilliseconds()).format("HH:mm:ss"));
+  },
+
+  onDomRefresh() {
+    /**
+     * [volume description]
+     * @type {Number}
+     */
+    this.audioElement[0].volume = 0.5;
+
+    /**
+     * [add listener for 'progress' event]
+     * @type {[type]}
+     */
+    this.audioElement[0].addEventListener('timeupdate', this.updateProgress, arguments);
+
+    /**
+     * [add listener for 'canplay' event]
+     * @type {[type]}
+     */
+    this.audioElement[0].addEventListener('canplay', _.bind(function() {
+
+      //get svg container
+      var svgContainer = this.svgContainer;
+
+      try {
+        //init timers
+        this.initTimers();
+
+        //init svg
+        this.initSvg(svgContainer);
+
+        // draw the circles
+        this.draw();
+
+      } catch (e) {
+        if (this.timer) {
+          this.stop();
+        }
+        throw new Error(e);
+      }
+
+    }, this));
   },
 
   draw() {
-		console.log(2);
-    var hh = $('nav').height();
-    var w = this.getUI('planetarium').width();
-    var h = $(window).height() - (3 * hh);
-    var x = w / 2;
-    var y = h / 2;
-    var t0 = new Date();
-    var delta = Date.now() - t0;
-
-    var _this = this;
+    var svgWidth = this.getUI('planetarium').width();
+    var svgHeight = $(window).height() - $('nav').outerHeight();
+    var self = this;
 
     // the data to visualize
-    this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
-    this.planets = require('assets/files/planets-simple');
+    var frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
 
-    // the planetarium
-    this.planetarium = d3.select(this.svgContainer)
-      .append("svg")
-      .attr("width", w)
-      .attr("height", h);
-
-    // the sun
-    this.planetarium
-      .append("circle")
-      .attr("r", 20)
-      .attr("cx", x)
-      .attr("cy", y)
-      .attr("class", "sun");
+    //colors
+    var colors = d3.scaleOrdinal(d3.schemeCategory10);
 
     // planet group
-    var planetGroup = this.planetarium.append("g")
-      .attr("class", "planet-group")
-      .attr("transform", "translate(" + x + "," + y + ")");
-
-    // draw planets with orbits
-    planetGroup.selectAll("g.planet")
-      .data(this.planets)
-      .enter()
-      .append("g")
-      .attr("class", "planet-cluster").each(function(d, i) {
-        d3.select(this).append("circle")
-          .attr("class", "orbit")
-          .attr("r", d.R * 2)
-          .attr("cx", 0)
-          .attr("cy", 0)
-        d3.select(this).append("circle")
-          .attr("r", d.r)
-          .attr("cx", d.R * 2)
-          .attr("class", "planet");
-      });
+    this.svg.append("g")
+      .attr("class", "circle-group")
+      .attr("transform", "translate(" + svgWidth / 2 + "," + svgHeight / 2 + ")");
   },
 
   play: function(e) {
-    var t0 = new Date();
-    var delta = (Date.now() - t0);
-    var _this = this;
+    e.preventDefault();
 
     //start playing
     this.audioElement[0].play();
-    // this.audioElement[0].volume = 0.01;
 
-    //start timer
-    this.timer = d3.timer(function() {
-      var delta = (Date.now() - t0);
-      var speed = 0;
-      _this.planetarium.selectAll(".planet-cluster").attr("transform", function(d) {
-        speed = d.phi0 * (delta / 3600);
-        return "rotate(" + speed + ")";
-      });
-    });
+    //start visualization using d3.timer function
+    // this.timer = d3.timer(this.visualizeData);
+
+    //fix UI
     this.getUI('stop').removeClass('hide');
     this.getUI('play').addClass('hide');
   },
 
-	stop: function (e) {
-		this.audioElement[0].pause();
-		this.audioElement[0].currentTime = 0;
+  visualizeData: function() {
+    var self = this;
 
-		//event to stop animation
-		this.trigger('stop:animation');
+    // get frequencyData
+    var frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
 
-		//hide-show controls
-		this.getUI('stop').addClass('hide');
-		this.getUI('play').removeClass('hide');
-	},
+    //copy byte frequencyData into frequencyData array
+    this.analyser.getByteFrequencyData(frequencyData);
 
-	updateProgress: function () {
-		var progress = this.$('progress');
-		var timeContainer = this.$('.time-now');
-		var value = 0,
-			timeValue;
-		var currentTime = this.audioElement[0].currentTime;
-		var duration = this.audioElement[0].duration;
-		var currenTimeMilli = currentTime * 1000;
-		var timeNow = moment.duration(currenTimeMilli);
+    //colors
+    var colorPallete = d3.scaleOrdinal(d3.schemeCategory10);
 
-		if (progress.length && currentTime > 0) {
-			value = Math.floor(10 * currentTime / duration);
-			timeValue = Math.floor(currentTime);
+    //clean up
+    this.svg.exit().remove();
+  },
 
-			progress.css({
-				width: value + "%",
-				'background-color': '#ff77cc'
-			});
-			this.getUI('timeNow').text(moment.utc(timeNow.asMilliseconds()).format("HH:mm:ss"));
-		}
-	},
+  stop: function(e) {
+    if(e)
+      e.preventDefault();
 
-	seek: function (e) {
-		e.preventDefault();
-		this.audioElement[0].currentTime += 30;
-	},
+    this.audioElement[0].pause();
 
-	getRandomColor() {
-		var letters = 'ff77cc';
-		var color = '#';
-		for (var i = 0; i < 6; i++) {
-			color += letters[Math.floor(Math.random() * 6)];
-		}
-		return color;
-	},
+    //stop time
+    if (this.timer) {
+      this.timer.stop();
+    }
 
-	generateRgbColor: function (d, i) {
-		var color = 'rgb(255,a,204)';
-		var find = "a";
-		var rgb = Math.floor(Math.random() * d);
-		var re = new RegExp(find, 'g');
-		color = color.replace(re, rgb);
+    //hide-show controls
+    if(this.getUI('stop').length) this.getUI('stop').addClass('hide');
+    if(this.getUI('stop').length) this.getUI('play').removeClass('hide');
+  },
 
-		return color;
-	},
+  updateProgress: function() {
+    var progress = this.getUI('progress');
+    var currentTime = this.audioElement[0].currentTime;
+    var duration = this.audioElement[0].duration;
+    console.log(currentTime, duration);
 
-	onPlayerEnter(e) {
-		this.getUI('player').css({
-			opacity: 1
-		})
-	},
+    var current_milliseconds = currentTime * 1000;
+    var timeNow = moment.duration(current_milliseconds);
 
-	onPlayerLeave(e) {
-		this.getUI('player').css({
-			opacity: 0.1
-		});
-	},
+    var t = moment.utc(timeNow.asMilliseconds()).format("HH:mm:ss");
+    this.getUI('timeNow').text(t);
 
-	serializeData() {
-		var streamUrl = this.model.get('stream_url') + "?client_id=" + config.client_id;
-		return _.extend(this.model.toJSON(), {
-			pageTitle: 'Track',
-			streamUrl: streamUrl
-		});
-	},
+    if (progress.length && currentTime > 0) {
+      var value = Math.floor(currentTime * 100 / duration);
+      progress.css({
+        width: value + "%"
+      });
+    }
+  },
 
-	onBeforeDestroy() {
-		this.stop();
-	},
+  seek: function(e) {
+    e.preventDefault();
+    var percent = 60;
+    this.getUI('progress').value = percent / 100;
+    this.audioElement[0].currentTime += percent;
+  },
 
-	onDestroy() {
-		//todo
-	}
+  onPlayerEnter(e) {
+    this.getUI('player').css({
+      opacity: 1
+    })
+  },
+
+  onPlayerLeave(e) {
+    this.getUI('player').css({
+      opacity: 0.1
+    });
+  },
+
+  serializeData() {
+    var streamUrl = this.model.get('stream_url') + "?client_id=" + config.client_id;
+    return _.extend(this.model.toJSON(), {
+      pageTitle: 'Track',
+      streamUrl: streamUrl
+    });
+  },
+
+  onBeforeDestroy() {
+    this.stop();
+  }
 });
 
 module.exports = TrackView;

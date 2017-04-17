@@ -4,8 +4,6 @@ const template = require('templates/home.hbs');
 
 var AboutView = Marionette.View.extend({
   template: template,
-  tagName: 'section',
-  id: 'about',
   className: 'about',
   serializeData() {
     return {
@@ -14,4 +12,4 @@ var AboutView = Marionette.View.extend({
   }
 });
 
-module.exports = HomeView;
+module.exports = AboutView;

@@ -27,6 +27,19 @@ var app = Marionette.Application.extend({
      */
     this.router = new Router();
   },
+
+  toggleMask(open) {
+    if(open && open == true) {
+      $('.lmask').removeClass('hide');
+    } else {
+      _.delay(function() {
+        $('.lmask').addClass('hide');
+      }, 1500);
+    }
+
+    return false;
+  },
+
   onStart() {
 
     //global debuglog

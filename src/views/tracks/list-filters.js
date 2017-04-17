@@ -5,7 +5,6 @@ const moment = require('moment');
 const TagsView = require('views/tags');
 
 require('assets/css/filter.css');
-require('assets/css/search-box.css');
 
 var FiltersView = Marionette.View.extend({
 	template: template,
@@ -30,6 +29,10 @@ var FiltersView = Marionette.View.extend({
 		cdfilterblock: '.cd-filter-block',
 		filterform: 'form.form-filters',
 		searchValue: '.search-value'
+	},
+
+	initialize() {
+
 	},
 
 	onDomRefresh() {

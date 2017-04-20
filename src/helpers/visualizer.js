@@ -2,99 +2,115 @@ const d3 = require('d3');
 const moment = require('moment');
 
 function visualizer() {
-  visualizer.prototype.draw = function() {
-    var dimensions = arguments[0];
-    var svgWidth = dimensions[0];
-    var svgHeight = dimensions[1];
+	visualizer.prototype.draw = function (container, width, height) {
 
-    // generate random points
-    var data = d3.range(50).map(function(i) {
-      return [Math.floor(Math.random() * svgWidth), Math.floor(Math.random() * svgHeight)];
-    });
+		var radius = Math.min(width, height) / 2;
+		var tau = 2 * Math.PI; //full circle
+		/**
+		 * [createSvg helper]
+		 * @param  {[type]} parent [description]
+		 * @param  {[type]} width  [description]
+		 * @param  {[type]} height [description]
+		 * @return [type]          [description]
+		 */
+		function createSvg(parent, width, height) {
+			return d3.select(parent)
+				.append('svg')
+				.attr('height', height)
+				.attr('width', width);
+		}
 
-    var matrix = [
-      [11975, 5871, 8916, 2868],
-      [1951, 10048, 2060, 6171],
-      [8010, 16145, 8090, 8045],
-      [1013, 990, 940, 6907]
-    ];
+		//create
+		var frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
 
-    var outerRadius = Math.floor(Math.min(svgWidth, svgHeight) / 3) - 40;
-    var innerRadius = outerRadius - 30;
-    var formatValue = d3.formatPrefix(",.0", 1e3);
+		//draw the svg element container
+		this.svg = createSvg(container, width, height);
 
-    var chord = d3.chord()
-      .padAngle(0.05)
-      .sortSubgroups(d3.descending);
+		//append center circle
+		this.svg
+			.append("circle")
+			.attr("r", 45)
+			.attr("cx", width / 2)
+			.attr("cy", height / 2)
+			.attr("class", "center")
+			.attr('fill', 'none')
+			.attr('stroke', '#ccc')
+			.attr('stroke-width', 1);
 
-    var arc = d3.arc()
-      .innerRadius(innerRadius)
-      .outerRadius(outerRadius);
+		//append group element and position it at the center
+		this.svg.append('g').attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
-    var ribbon = d3.ribbon()
-      .radius(innerRadius);
+		var arc = d3.arc()
+			.startAngle(function (d) {
+				return 0;
+			})
+			.endAngle(function (d) {
+				return (2 * Math.PI) - Math.SQRT2;
+			})
+			.innerRadius(function (d) {
+				return 90;
+			})
+			.outerRadius(function (d) {
+				return 180;
+			});
 
-    var color = d3.scaleOrdinal()
-      .domain(d3.range(4))
-      .range(["#000000", "#FFDD89", "#957244", "#F26223"]);
+		this.svg.select('g')
+			.selectAll('path')
+			.data(frequencyData)
+			.enter()
+			.append('path')
+			.attr('d', arc)
+			.style('stroke', 'steelblue')
+			.style('stroke-width', 1)
+			.attr('fill', 'none')
+			.transition()
+			.duration(1500)
+			.delay(1500)
+			.ease(Math.sqrt)
+			.attr('transform', function (d, i) {
+				return "rotate(" + i * tau + ")";
+			})
+	}
 
-    var g = this.svg.append("g")
-      .attr("transform", "translate(" + svgWidth / 2 + "," + ((svgHeight / 2) - 100) + ")")
-      .datum(chord(matrix));
+	visualizer.prototype.visualize = function (elapsed) {
+		var data = [];
 
-    var group = g.append("g")
-      .attr("class", "groups")
-      .selectAll("g")
-      .data(function(chords) {
-        return chords.groups;
-      })
-      .enter().append("g");
+		// get frequencyData
+		var frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
 
-    group.append("path")
-      .attr('class', 'outer')
-      .style("fill", function(d) {
-        return color(d.index);
-      })
-      .style("stroke", function(d) {
-        return d3.rgb(color(d.index)).darker();
-      })
-      .attr("d", arc);
+		//color
+		var colors = d3.scaleOrdinal(d3.schemeCategory10);
 
-    g.append("g")
-      .attr("class", "ribbons")
-      .selectAll("path")
-      .data(function(chords) {
-        return chords;
-      })
-      .enter().append("path")
-      .attr("class", "inner")
-      .attr("d", ribbon)
-      .style("fill", function(d) {
-        return color(d.target.index);
-      })
-      .style("stroke", function(d) {
-        return d3.rgb(color(d.target.index)).darker();
-      });
-  }
+		//copy byte frequencyData into frequencyData array
+		this.analyser.getByteFrequencyData(frequencyData);
 
-  visualizer.prototype.visualizeData = function() {
-    var data = [];
+		var arc = d3.arc()
+			.startAngle(function (d, i) {
+				return 0;
+			})
+			.endAngle(function (d, i) {
+				return (2 * Math.PI);
+			})
+			.innerRadius(function (d) {
+				return d / 2;
+			})
+			.outerRadius(function (d) {
+				return d;
+			});
 
-    // get frequencyData
-    var frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
+		this.svg.select('g')
+			.selectAll('path')
+			.data(frequencyData)
+			.attr('d', arc)
+			.attr('fill', function(d, i){
+				return colors(function(d, i) {
+					return d * i + Math.floor(Math.random() * 100);
+				});
+			});
 
-    //copy byte frequencyData into frequencyData array
-    this.analyser.getByteFrequencyData(frequencyData);
-
-    this.svg.selectAll('path.inner')
-      .data(frequencyData)
-      .attr('transform', function(d, i) {;
-        return "rotate(" + (d / 2.5 * i) + ")";
-      })
-
-    //clean up
-    this.svg.exit().remove();
-  }
+		//clean up
+		this.svg.exit().remove();
+	}
 }
 
 module.exports = new visualizer();

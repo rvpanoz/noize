@@ -36,12 +36,18 @@ var FiltersView = Marionette.View.extend({
 	},
 
 	onDomRefresh() {
-		this.getUI('searchValue').css({
-			width: '800px'
-		});
+		this.onKeyDown('atish'); //dev test
+		// this.getUI('searchValue').css({
+		// 	width: '800px'
+		// });
 	},
 
 	onKeyDown(e) {
+		if(typeof e === 'string') {
+			this.triggerMethod('fetch:data', e);
+			return false;
+		}
+
 		var code = e.keyCode || e.which;
 		if (code == 13) {
 			var queryString = this.getUI('searchValue').val();
